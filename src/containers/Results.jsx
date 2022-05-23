@@ -4,11 +4,12 @@ import { AnimeList } from '../components/AnimeList'
 export function Results() {
 
   const search = useContext(SearchContext)
-  const [dataExists, setDataExists] = useState(true)
+  const [dataExists, setDataExists] = useState(false)
 
   useEffect(() => {
+    console.log('here')
     if (search.animeData === undefined || search.animeData.length === 0) {
-      try {
+      try { 
         search.setData(JSON.parse(localStorage.getItem('myData')))
         setDataExists(true)
       } catch (error) {
@@ -16,9 +17,21 @@ export function Results() {
         setDataExists(false)
       }
     }
+    else {
+      setDataExists(true)
+    }
   }, [search])
 
   return (
-    <div>{(dataExists && <AnimeList data={search.animeData}/>) || 'Data does not exist'}</div>
+    // <div>
+    //   {console.log(search.animeData)}
+    // </div>
+    <div>
+      {
+        dataExists 
+        ? <AnimeList data={search.animeData}/> 
+        : 'Data does not exist'
+      }
+    </div>
   )
 }

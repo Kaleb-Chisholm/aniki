@@ -3,18 +3,19 @@ import { GridItem, Center, Box, Image, Text } from '@chakra-ui/react'
 
 export function AnimeCard(props) {
 
-  let title = props.anime.abbreviatedTitles[0] 
-              || props.anime.canonicalTitle
-  const startDate = props.anime.startDate.substring(0,4)
-  const imgURL = props.anime.posterImage.small
-  const epCount = props.anime.episodeCount
+  const data = props.anime
+  console.log(data)
+  let title = data.title.english
+  const startDate = title
+  const imgURL = title
+  const epCount = title
 
   
 
-  if (title.length > 30) {
-    title = title.substring(0,30)
-    title = title + " ..."
-  }
+  // if (title.length > 30) {
+  //   title = title.substring(0,30)
+  //   title = title + " ..."
+  // }
 
   return (
     <GridItem>
@@ -25,11 +26,11 @@ export function AnimeCard(props) {
         p='10px' 
         borderRadius='sm'
       >
-        <Image 
+        {/* <Image 
           src={imgURL} 
           alt='anime-poster'
           border='2px solid black'
-        />
+        /> */}
         <Text 
           fontSize='xl' 
           fontWeight='bold' 
@@ -37,7 +38,7 @@ export function AnimeCard(props) {
           maxW='288px' 
           minH='60px'
         >
-          {title.toUpperCase() + ' '}
+          {title}
           <span className='showDate'>{startDate}</span>
         </Text>
         <Text>

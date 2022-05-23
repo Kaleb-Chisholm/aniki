@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 export function SearchForm() {
 
-  const toast = useToast()
+  // const toast = useToast()
   const navigate = useNavigate()
   const search = useContext(SearchContext)
   const [input, setInput] = useState([])
@@ -17,27 +17,10 @@ export function SearchForm() {
 
   const handleSearch = e => {
     e.preventDefault()
-    if (!input || /^\s*$/.test(input)) {
-      toast({
-        title: 'Invalid Input',
-        description: "Prompt is Required",
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      })
-      return
-    }
-    if (input.length > 100) {
-      toast({
-        title: 'Invalid Input',
-        description: "Prompt exceeded maximum length of 100 characters",
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      })
-      return
-    }
-    search.search(input).then((data) => {
+    console.log(input)
+    search.search(input)
+    // navigate('/results')
+    .then((data) => {
       search.setData(data.data)
       console.log(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
