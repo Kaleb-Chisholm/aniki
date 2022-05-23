@@ -14,3 +14,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.textPop {
+  color: #FFF07C;
+}
+
+.showDate {
+  font-weight: normal;
+  font-size: 12pt;
+}

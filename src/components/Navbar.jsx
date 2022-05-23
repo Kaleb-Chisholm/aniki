@@ -38,8 +38,7 @@ export function Navbar() {
     <Flex 
       bg='primary' 
       borderRadius='lg' 
-      justify='space-between' 
-      m='15px' 
+      justify='space-between'
       p='5px'
     >
       <Text fontSize='2xl' fontWeight='bold' color='gray.300' my='10px' ml='20px'>
