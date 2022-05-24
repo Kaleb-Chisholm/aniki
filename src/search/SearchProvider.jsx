@@ -13,17 +13,6 @@ export function SearchProvider({ children }) {
         return response.ok ? json : Promise.reject(json);
     });
   }
-  
-  // function handleData(data) {
-  //   console.log(data.data.Page.media);
-  //   setData(data.data.Page.media)
-  //   localStorage.setItem('myData', JSON.stringify(data))
-  // }
-  
-  // function handleError(error) {
-  //   alert('Error, check console');
-  //   console.error(error);
-  // }
 
   const search = (searchTerm) => {
     var query = `
@@ -40,8 +29,47 @@ export function SearchProvider({ children }) {
             english
             native
           }
-          type
+          episodes
+          duration
+          chapters
+          isAdult
           genres
+          seasonYear
+          characters(page: 1, role: MAIN) {
+            edges {
+              node {
+                id
+                name {
+                  first
+                  last
+                }
+              }
+              role
+              voiceActors (language: JAPANESE) {
+                id
+                name {
+                  first
+                  last
+                }
+              }
+            }
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          studios {
+            edges {
+              id
+              node {
+                name
+              }
+            }
+          }
+          tags {
+            name
+          }
         }
       }
     }
@@ -65,13 +93,7 @@ export function SearchProvider({ children }) {
             })
         };
 
-    return fetch(url, options).then(handleResponse)
-  //   .then(handleData)
-  //   .catch(handleError);
-
-    // return fetch(`https://kitsu.io/api/edge/anime?filter[text]=${searchTerm}`)
-    // .then(response => response.json())
-                      
+    return fetch(url, options).then(handleResponse)            
   }
   return (
     <SearchContext.Provider 

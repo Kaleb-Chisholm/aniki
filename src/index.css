@@ -21,5 +21,10 @@ code {
 
 .showDate {
   font-weight: normal;
+  margin-left: 5px;
   font-size: 12pt;
+}
+
+.showDuration {
+  margin-left: 15px;
 }

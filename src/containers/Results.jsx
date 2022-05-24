@@ -7,7 +7,6 @@ export function Results() {
   const [dataExists, setDataExists] = useState(false)
 
   useEffect(() => {
-    console.log('here')
     if (search.animeData === undefined || search.animeData.length === 0) {
       try { 
         search.setData(JSON.parse(localStorage.getItem('myData')))

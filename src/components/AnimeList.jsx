@@ -3,9 +3,8 @@ import { AnimeCard } from './AnimeCard'
 
 export function AnimeList(props) {
   return (
-    <Grid mr='5px' templateColumns='repeat(5, 1fr)' gap={5}>
+    <Grid templateColumns='repeat(3, 1fr)' gap={5} m='50px'>
       {
-        // console.log(props.data.Page.media)
         props.data.Page.media.map((item) => (
           <AnimeCard key={item.id} anime={item} />
         ))

@@ -19,7 +19,6 @@ export function SearchForm() {
     e.preventDefault()
     console.log(input)
     search.search(input)
-    // navigate('/results')
     .then((data) => {
       search.setData(data.data)
       console.log(data.data)
