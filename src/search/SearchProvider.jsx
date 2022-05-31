@@ -35,6 +35,8 @@ export function SearchProvider({ children }) {
           isAdult
           genres
           seasonYear
+          averageScore
+          popularity
           characters(page: 1, role: MAIN) {
             edges {
               node {
@@ -66,9 +68,6 @@ export function SearchProvider({ children }) {
                 name
               }
             }
-          }
-          tags {
-            name
           }
         }
       }

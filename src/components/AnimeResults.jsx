@@ -1,7 +1,9 @@
 import { useContext, useState, useEffect } from 'react'
 import { SearchContext } from '../context/search'
-import { AnimeList } from '../components/AnimeList'
-export function Results() {
+import { Center, Grid } from '@chakra-ui/react'
+import { AnimeCard } from './AnimeCard'
+
+export function AnimeResults() {
 
   const search = useContext(SearchContext)
   const [dataExists, setDataExists] = useState(false)
@@ -28,7 +30,18 @@ export function Results() {
     <div>
       {
         dataExists 
-        ? <AnimeList data={search.animeData}/> 
+        ? 
+        (
+          <Center>
+            <Grid templateColumns='repeat(4, 1fr)' gap={5} m='50px' w='fit-content'>
+              {
+                search.animeData.Page.media.map((item) => (
+                  <AnimeCard key={item.id} anime={item} />
+                ))
+              }
+            </Grid>
+          </Center>
+        )
         : 'Data does not exist'
       }
     </div>

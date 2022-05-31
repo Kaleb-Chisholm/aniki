@@ -1,11 +1,9 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Grid, Stack, Text } from '@chakra-ui/react'
 import { Navbar } from '../components/Navbar'
+import { Sidebar } from '../components/Sidebar'
 
 export function Page({children}) {
   return (
-    <Box p='15px' h='100vh'>
-      <Navbar/>
-        {children}
-  </Box>
+      <Sidebar>{children}</Sidebar>
   )
 }

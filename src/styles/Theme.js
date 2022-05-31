@@ -2,14 +2,18 @@ import { extendTheme, textDecoration } from '@chakra-ui/react'
 
 export const myTheme = extendTheme ({
   colors: {
-    primary: '#403D58',
+    headerColor: '#363537',
+    menuColor: '#8D78F7',
     cardColor: '#EDEADF',
+    textHoverColor: '#F39B6D',
+    primaryBg: '#29282A',
   },
   styles: {
     global: () => ({
       body: {
-        bg: 'linear-gradient(#292929, #707070)',
+        bg: '#29282A',
         color: 'white',
+        // fontFamily: 'monospace',
       },
     })
   },
@@ -18,6 +22,7 @@ export const myTheme = extendTheme ({
       variants: {
         'navbarbtn': {
           fontWeight: 'normal',
+          color: 'white',
           bg: 'none',
           px: '10px',
           _hover: {
