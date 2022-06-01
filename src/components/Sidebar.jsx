@@ -18,10 +18,17 @@ import {
   IoBookOutline, 
   IoTvOutline,
   IoPeopleOutline,
-  IoInformationCircleOutline
+  IoInformationCircleOutline,
+  IoHomeOutline
 } from 'react-icons/io5'
 
 const SidebarItems = [
+  {
+    title: 'Menu',
+    options: [
+      {name: 'Home', path: '', icon: IoHomeOutline},
+    ],
+  },
   {
     title: 'Anime',
     options: [
@@ -94,20 +101,17 @@ const SidebarContent = ({ onClose, ...rest }) => {
       {...rest}
     >
       <Box 
-        bg='headerColor' 
+        bg='primaryColor' 
         h='full' 
         overflowY='auto'
         borderRadius='2xl'
+        shadow='0px 0px 10px black'
       >
         <Flex h='20' alignItems='center' mx='8' justifyContent='space-between'>
           <Text 
             fontSize='2xl' 
             fontFamily='monospace' 
             fontWeight='bold'
-            bg='primaryBg' 
-            w='100%' 
-            textAlign='center' 
-            borderRadius='2xl'
           >
             Aniki
           </Text>
@@ -153,8 +157,7 @@ const NavItem = ({ icon, children, path }) => {
         role='group'
         cursor='pointer'
         _hover={{
-          bg: 'textHoverColor',
-          color: 'white',
+          textShadow: '0 0 10px white'
         }}
       >
         {icon && (
@@ -162,7 +165,7 @@ const NavItem = ({ icon, children, path }) => {
             mr='4'
             fontSize='18'
             _groupHover={{
-              color: 'white',
+              textShadow: '0 0 5px white',
             }}
             as={icon}
           />

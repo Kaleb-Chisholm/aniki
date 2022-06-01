@@ -10,7 +10,7 @@ export function Landing() {
           The Anime Wiki
         </Text>
         <Text textAlign='center'>
-          Your stop for everything anime and manga
+          Your for everything anime and manga
         </Text>
       </Stack>
     </Center>

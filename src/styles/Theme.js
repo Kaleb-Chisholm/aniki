@@ -2,7 +2,8 @@ import { extendTheme, textDecoration } from '@chakra-ui/react'
 
 export const myTheme = extendTheme ({
   colors: {
-    headerColor: '#363537',
+    primaryColor: 'linear-gradient(-45deg, #29282A, #515053)',
+    primaryShadow: '#4B494D',
     menuColor: '#8D78F7',
     cardColor: '#EDEADF',
     textHoverColor: '#F39B6D',
@@ -13,7 +14,6 @@ export const myTheme = extendTheme ({
       body: {
         bg: '#29282A',
         color: 'white',
-        // fontFamily: 'monospace',
       },
     })
   },

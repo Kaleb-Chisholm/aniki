@@ -1,7 +1,8 @@
 import { useContext, useState, useEffect } from 'react'
 import { SearchContext } from '../context/search'
-import { Center, Grid } from '@chakra-ui/react'
+import { Box, Center, Grid, Heading } from '@chakra-ui/react'
 import { AnimeCard } from './AnimeCard'
+import { SearchForm } from './SearchForm'
 
 export function AnimeResults() {
 
@@ -9,9 +10,10 @@ export function AnimeResults() {
   const [dataExists, setDataExists] = useState(false)
 
   useEffect(() => {
+    search.setIsAnime(true)
     if (search.animeData === undefined || search.animeData.length === 0) {
       try { 
-        search.setData(JSON.parse(localStorage.getItem('myData')))
+        search.setDataAnime(JSON.parse(localStorage.getItem('myData')))
         setDataExists(true)
       } catch (error) {
         console.log(error)
@@ -24,16 +26,20 @@ export function AnimeResults() {
   }, [search])
 
   return (
-    // <div>
-    //   {console.log(search.animeData)}
-    // </div>
-    <div>
+    <Box>
+      <SearchForm />
+      <Heading>{`Showing Results for "${search.getSearch()}"`}</Heading>
       {
         dataExists 
         ? 
         (
           <Center>
-            <Grid templateColumns='repeat(4, 1fr)' gap={5} m='50px' w='fit-content'>
+            <Grid 
+              templateColumns='repeat(auto-fill, minmax(215px, 1fr))'
+              gap={2} 
+              m='50px' 
+              w='full'
+            >
               {
                 search.animeData.Page.media.map((item) => (
                   <AnimeCard key={item.id} anime={item} />
@@ -44,6 +50,6 @@ export function AnimeResults() {
         )
         : 'Data does not exist'
       }
-    </div>
+    </Box>
   )
 }

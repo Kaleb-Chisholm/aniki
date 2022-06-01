@@ -3,10 +3,23 @@ import { SearchContext } from '../context/search'
 
 export function SearchProvider({ children }) {
 
+  const [searchInput, setSearchInput] = useState('')
+  const setSearch = (data) => { setSearchInput(data) }
+  const getSearch = () => { return searchInput }
+
   const [animeData, setAnimeData] = useState([])
-  const [singleData, setSingleData] = useState({})
-  const setData = (data) => { setAnimeData(data) }
-  const setSingle = (data) => { setSingleData(data) }
+  const [singleAnimeData, setSingleAnimeData] = useState({})
+  const setDataAnime = (data) => { setAnimeData(data) }
+  const setSingleAnime = (data) => { setSingleAnimeData(data) }
+
+  const [mangaData, setMangaData] = useState([])
+  const [singleMangaData, setSingleMangaData] = useState({})
+  const setDataManga = (data) => { setMangaData(data) }
+  const setSingleManga = (data) => { setSingleMangaData(data) }
+
+  const [isAnimeSearch, setIsAnimeSearch] = useState()
+  const getIsAnime = () => { return isAnimeSearch }
+  const setIsAnime = (data) => { setIsAnimeSearch(data) }
 
   const handleResponse = (response) => {
     return response.json().then(function (json) {
@@ -14,7 +27,7 @@ export function SearchProvider({ children }) {
     });
   }
 
-  const search = (searchTerm) => {
+  const searchAnime = (searchTerm) => {
     var query = `
     query ($page: Int, $perPage: Int, $search: String) {
       Page(page: $page, perPage: $perPage) {
@@ -94,17 +107,96 @@ export function SearchProvider({ children }) {
 
     return fetch(url, options).then(handleResponse)            
   }
+
+  const searchManga = (searchTerm) => {
+    var query = `
+    query ($page: Int, $perPage: Int, $search: String) {
+      Page(page: $page, perPage: $perPage) {
+        pageInfo {
+          total
+          perPage
+        }
+        media(search: $search, type: MANGA, sort: FAVOURITES_DESC) {
+          id
+          title {
+            romaji
+            english
+            native
+          }
+          chapters
+          isAdult
+          genres
+          type
+          startDate {
+            year
+          }
+          seasonYear
+          averageScore
+          popularity
+          characters(page: 1, role: MAIN) {
+            edges {
+              node {
+                id
+                name {
+                  first
+                  last
+                }
+              }
+              role
+            }
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+        }
+      }
+    }
+    `
+    var variables = {
+        search: searchTerm,
+        page: 1,
+        perPage: 20,
+    };
+
+    var url = 'https://graphql.anilist.co',
+        options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+
+    return fetch(url, options).then(handleResponse)            
+  }
+
   return (
     <SearchContext.Provider 
-    value={{ 
-      search, 
-      animeData, 
-      setData, 
-      singleData, 
-      setSingle
-    }}
-  >
-    { children }
+      value={{ 
+        setSearch,
+        getSearch,
+        searchAnime, 
+        animeData, 
+        setDataAnime, 
+        singleAnimeData, 
+        setSingleAnime,
+        searchManga, 
+        mangaData, 
+        setDataManga, 
+        singleMangaData, 
+        setSingleManga,
+        setIsAnimeSearch,
+        setIsAnime,
+        getIsAnime
+      }}
+    >
+      { children }
     </SearchContext.Provider>
   )
 }

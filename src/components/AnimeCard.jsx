@@ -41,93 +41,128 @@ export function AnimeCard(props) {
   let title = (data.title.english || data.title.romaji)
   let fullTitle = title
 
-  if (title.length >= 35) {
-    title = title.substring(0,35) + '...'
+  if (title.length >= 30) {
+    title = title.substring(0,30) + '...'
   }
 
   return (
-    <Grid 
-      bg='cardColor' 
-      maxW='fit-content' 
-      borderRadius='lg' 
-      shadow='2px 2px 5px #101010'
+    <Grid
+      transitionDuration='0.5s'
+      cursor='pointer'
+      _hover={{
+        transform:'scale(1.05)',
+        cursor: 'hand'
+      }}
     >
-      <GridItem h='315px'>
-        <CircularProgress 
-          value={score} 
-          capIsRound 
-          size='40px'
-          w='40px'
-          thickness='10px'
-          color={ratingColor}
-          position='absolute'
-          mt='20px' ml='220px'
-          borderRadius='full'
-          trackColor='black'
-          bg='white'
-          opacity='70%'
-        >
-          <CircularProgressLabel 
-            fontWeight='bold' 
-            fontSize='xs' 
-            color='black'
-          >
-            {score}%
-          </CircularProgressLabel>
-        </CircularProgress>
+      <GridItem>
         <Image 
           src={image}
           alt='anime-poster'
-          border='2px solid black'
-          h='300px' w='250px'
-          borderRadius='lg'
-          m='15px'
+          w='215px' h='280px'
+          shadow='0px 0px 5px black'
         />
       </GridItem>
-      <Tooltip label={fullTitle} placement='top-start' bg='red' maxW='250px'>
-        <Text 
-          fontSize='xl' 
-          color='black' 
-          fontWeight='bold' 
-          letterSpacing='-1.5px' 
-          w='250px' h='60px' 
-          mx='15px'
+      <GridItem>
+        <Tooltip 
+          label={fullTitle} 
+          placement='top-start' 
+          bg='primaryColor' 
+          maxW='215px'
         >
-          {title.toUpperCase()}
-          <span className='showDate'>{year}</span>
-        </Text>
-      </Tooltip>
-      {
-        adult &&
-        <Text 
-          position='absolute' 
-          mt='-33px' ml='5px' 
-          bg='red.400' 
-          w='fit-content' 
-          p='2px 5px' 
-          borderRadius='lg'
-          opacity='75%'
-          fontWeight='bold'
-        >
-          NSFW
-        </Text>
-      }
-      <HStack wrap='wrap' m='10px' h='70px' justify='center'>{
-        genres.map((genre) => 
           <Text
-            key={genre}
-            bg='white'
-            p='2px 5px'
-            m='5px'
-            borderRadius='lg'
-            shadow='2px 2px 5px #949494'
-            color='black'
+            fontSize='lg'
+            fontWeight='bold'
+            letterSpacing='tighter'
+            w='215px' h='60px'
           >
-            {genre}
+            {title.toUpperCase()}
+            {' '}
+            <span className='showDate'>{year}</span>
           </Text>
-        )
-      }</HStack>
+        </Tooltip>
+      </GridItem>
     </Grid>
+    // <Grid 
+    //   bg='cardColor' 
+    //   maxW='fit-content' 
+    //   borderRadius='lg' 
+    //   shadow='2px 2px 5px #101010'
+    // >
+    //   <GridItem h='315px'>
+    //     <CircularProgress 
+    //       value={score} 
+    //       capIsRound 
+    //       size='40px'
+    //       w='40px'
+    //       thickness='10px'
+    //       color={ratingColor}
+    //       position='absolute'
+    //       mt='20px' ml='220px'
+    //       borderRadius='full'
+    //       trackColor='black'
+    //       bg='white'
+    //       opacity='70%'
+    //     >
+    //       <CircularProgressLabel 
+    //         fontWeight='bold' 
+    //         fontSize='xs' 
+    //         color='black'
+    //       >
+    //         {score}%
+    //       </CircularProgressLabel>
+    //     </CircularProgress>
+    //     <Image 
+    //       src={image}
+    //       alt='anime-poster'
+    //       border='2px solid black'
+    //       h='300px' w='260px'
+    //       borderRadius='lg'
+    //     />
+    //   </GridItem>
+    //   <Tooltip label={fullTitle} placement='top-start' bg='red' maxW='250px'>
+    //     <Text 
+    //       fontSize='xl' 
+    //       color='black' 
+    //       fontWeight='bold' 
+    //       letterSpacing='-1.5px' 
+    //       w='250px' h='60px' 
+    //       mx='15px'
+    //     >
+    //       {title.toUpperCase()}
+    //       <span className='showDate'>{year}</span>
+    //     </Text>
+    //   </Tooltip>
+    //   {
+    //     adult &&
+    //     <Text 
+    //       position='absolute' 
+    //       mt='-33px' ml='5px' 
+    //       bg='red.400' 
+    //       w='fit-content' 
+    //       p='2px 5px' 
+    //       borderRadius='lg'
+    //       opacity='75%'
+    //       fontWeight='bold'
+    //     >
+    //       NSFW
+    //     </Text>
+    //   }
+    //   <HStack wrap='wrap' m='10px' h='70px' justify='center'>{
+    //     genres.map((genre) => 
+    //       <Text
+    //         key={genre}
+    //         bg='white'
+    //         p='2px 5px'
+    //         m='5px'
+    //         borderRadius='lg'
+    //         shadow='2px 2px 5px #949494'
+    //         color='black'
+    //       >
+    //         {genre}
+    //       </Text>
+    //     )
+    //   }</HStack>
+    // </Grid>
     // <Grid 
     //   bgColor='cardColor'
     //   color='black'

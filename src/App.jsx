@@ -11,6 +11,7 @@ import { MangaList } from './containers/lists/MangaList'
 import { MyFriends } from './containers/community/MyFriends'
 import { Forum } from './containers/community/Forum'
 import { AnimeResults } from './components/AnimeResults'
+import { MangaResults } from './components/MangaResults'
 import { SearchProvider } from './search/SearchProvider'
 import './App.css';
 
@@ -38,7 +39,8 @@ export default function App() {
         <Route path='/my-friends' element={<Page><MyFriends /></Page>}/>
         <Route path='/forum' element={<Page><Forum /></Page>}/>
 
-        <Route path='/results' element={<Page><AnimeResults /></Page>}/>
+        <Route path='/anime-results' element={<Page><AnimeResults /></Page>}/>
+        <Route path='/manga-results' element={<Page><MangaResults /></Page>}/>
       </Routes>
     </BrowserRouter>
   </SearchProvider>
