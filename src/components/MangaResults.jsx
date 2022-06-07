@@ -1,20 +1,24 @@
 import { useContext, useState, useEffect } from 'react'
 import { SearchContext } from '../context/search'
-import { Box, Center, Grid, Heading, Text } from '@chakra-ui/react'
-import { AnimeCard } from './AnimeCard'
+import { Box, Button, Center, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import { MangaSearch } from '../containers/manga/MangaSearch'
 import { MangaCard } from './MangaCard'
+import { IoArrowBackSharp, IoArrowForwardSharp } from 'react-icons/io5'
 
 export function MangaResults() {
 
   const search = useContext(SearchContext)
   const [dataExists, setDataExists] = useState(false)
+  const [hasPrev, setHasPrev] = useState(false)
+  const [hasNext, setHasNext] = useState(true)
 
   useEffect(() => {
     if (search.mangaData === undefined || search.mangaData.length === 0) {
       try { 
         search.setDataManga(JSON.parse(localStorage.getItem('myData')))
         search.setSearch(localStorage.getItem('myInput'))
+        search.setPageNum(localStorage.getItem('myPage'))
+        checkPages()
         setDataExists(true)
       } catch (error) {
         console.log(error)
@@ -22,9 +26,56 @@ export function MangaResults() {
       }
     }
     else {
+      checkPages()
       setDataExists(true)
     }
   }, [search])
+
+  
+  // Check if there are available prev and next pages
+  const checkPages = () => {
+    if (!search.mangaData.Page.pageInfo.hasNextPage) { setHasNext(false) } 
+    else { setHasNext(true) }
+    if (parseInt(search.getPageNum()) === 1) { setHasPrev(false) } 
+    else { setHasPrev(true) }
+  }
+
+  // Check if next page is available and reload next page content
+  const goNextPage = () => {
+    if (!hasNext) {
+      return
+    }
+
+    const item = search.getSearch()
+    const page = parseInt(search.getPageNum()) + 1
+
+    localStorage.setItem('myPage', page)
+    search.setPageNum(page)
+    search.searchManga(item, page, "FAVOURITES_DESC")
+    .then((data) => {
+      search.setDataManga(data.data)
+      localStorage.setItem('myData', JSON.stringify(data.data))
+    })
+  }
+
+
+  // Check if prev page is available and reload prev page content
+  const goBackPage = () => {
+    if (!hasPrev) {
+      return
+    }
+
+    const item = search.getSearch()
+    const page = parseInt(search.getPageNum()) - 1
+
+    localStorage.setItem('myPage', page)
+    search.setPageNum(page)
+    search.searchManga(item, page, "FAVOURITES_DESC")
+    .then((data) => {
+      search.setDataManga(data.data)
+      localStorage.setItem('myData', JSON.stringify(data.data))
+    })
+  }
 
   return (
     <Box>
@@ -41,7 +92,7 @@ export function MangaResults() {
         dataExists 
         ? 
         (
-          <Center>
+          <Stack>
             <Grid 
               templateColumns='repeat(auto-fill, minmax(215px, 1fr))'
               gap={2} 
@@ -53,9 +104,51 @@ export function MangaResults() {
                   <MangaCard key={item.id} manga={item} />
                 ))
               }
-            {search.mangaData.Page.media[0].title.romaji}
             </Grid>
-          </Center>
+            <HStack justify='space-between'>
+              <Box>
+                {
+                  hasPrev ? (
+                    <Button 
+                      variant='backForthBtn' 
+                      onClick={goBackPage}
+                    >
+                      <IoArrowBackSharp />
+                    </Button>
+                  ) :
+                  (
+                    <Button 
+                      variant='backForthBtnDim' 
+                      onClick={goBackPage}
+                    >
+                      <IoArrowBackSharp />
+                    </Button>
+                  )
+                }
+              </Box>
+              <Text>{search.getPageNum()}</Text>
+              <Box>
+                {
+                  hasNext ? (
+                    <Button 
+                      variant='backForthBtn' 
+                      onClick={goNextPage}
+                    >
+                      <IoArrowForwardSharp />
+                    </Button>
+                  ) :
+                  (
+                    <Button 
+                      variant='backForthBtnDim' 
+                      onClick={goNextPage}
+                    >
+                      <IoArrowForwardSharp />
+                    </Button>
+                  )
+                }
+              </Box>
+            </HStack>
+          </Stack>
         )
         : 
         (

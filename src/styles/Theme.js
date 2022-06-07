@@ -17,7 +17,7 @@ export const myTheme = extendTheme ({
     primaryBright: '#BB90FB',
     primaryDim: '#785CA1',
     secondaryBright: '#20DDCB',
-    secondaryDim: '#179C8F',
+    secondaryDim: '#0F6159',
     boxGradient: 'linear-gradient(45deg, #2E2E2E, #515151)',
     // primaryShadow: '#4B494D',
     // menuColor: '#8D78F7',
@@ -49,6 +49,28 @@ export const myTheme = extendTheme ({
           borderRadius: '3xl',
           bg: 'secondaryBright',
           shadow: '0px 0px 10px black',
+          _hover: {
+            bg: 'primaryBright',
+          }
+        },
+        'backForthBtn': {
+          color: 'black',
+          borderRadius: '3xl',
+          bg: 'secondaryBright',
+          shadow: '0px 0px 10px black',
+          w: '50px',
+          my: '20px',
+          _hover: {
+            bg: 'primaryBright',
+          }
+        },
+        'backForthBtnDim': {
+          color: 'black',
+          borderRadius: '3xl',
+          bg: 'secondaryDim',
+          shadow: '0px 0px 10px black',
+          w: '50px',
+          my: '20px',
           _hover: {
             bg: 'primaryBright',
           }

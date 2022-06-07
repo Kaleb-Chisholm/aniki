@@ -8,18 +8,18 @@ export function SearchProvider({ children }) {
   const getSearch = () => { return searchInput }
 
   const [animeData, setAnimeData] = useState([])
-  const [singleAnimeData, setSingleAnimeData] = useState({})
   const setDataAnime = (data) => { setAnimeData(data) }
-  const setSingleAnime = (data) => { setSingleAnimeData(data) }
 
   const [mangaData, setMangaData] = useState([])
-  const [singleMangaData, setSingleMangaData] = useState({})
   const setDataManga = (data) => { setMangaData(data) }
-  const setSingleManga = (data) => { setSingleMangaData(data) }
 
   const [isAnimeSearch, setIsAnimeSearch] = useState()
   const getIsAnime = () => { return isAnimeSearch }
   const setIsAnime = (data) => { setIsAnimeSearch(data) }
+
+  const [pageNum, setPage] = useState(1)
+  const setPageNum = (num) => { setPage(num) }
+  const getPageNum = () => { return pageNum }
 
   const handleResponse = (response) => {
     return response.json().then(function (json) {
@@ -27,13 +27,15 @@ export function SearchProvider({ children }) {
     });
   }
 
-  const searchAnime = (searchTerm) => {
+  const searchAnime = (searchTerm, page, sort, filter) => {
     var query = `
     query ($page: Int, $perPage: Int, $search: String) {
       Page(page: $page, perPage: $perPage) {
         pageInfo {
           total
           perPage
+          currentPage
+          hasNextPage
         }
         media(search: $search, type: ANIME, sort: FAVOURITES_DESC) {
           id
@@ -91,7 +93,7 @@ export function SearchProvider({ children }) {
     `
     var variables = {
         search: searchTerm,
-        page: 1,
+        page: page,
         perPage: 20,
     };
 
@@ -209,16 +211,15 @@ export function SearchProvider({ children }) {
         searchAnime, 
         animeData, 
         setDataAnime, 
-        singleAnimeData, 
-        setSingleAnime,
         searchManga, 
         mangaData, 
         setDataManga, 
-        singleMangaData, 
-        setSingleManga,
         setIsAnimeSearch,
         setIsAnime,
-        getIsAnime
+        getIsAnime,
+        pageNum,
+        setPageNum,
+        getPageNum
       }}
     >
       { children }

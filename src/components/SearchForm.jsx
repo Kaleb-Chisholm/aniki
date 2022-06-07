@@ -46,6 +46,7 @@ export function SearchForm() {
     if (search.getIsAnime() === true) {
       search.setSearch(input)
       localStorage.setItem('myInput', input)
+      search.setPageNum(1)
       search.searchAnime(input)
       .then((data) => {
         search.setDataAnime(data.data)
@@ -57,6 +58,7 @@ export function SearchForm() {
     } else {
       search.setSearch(input)
       localStorage.setItem('myInput', input)
+      search.setPageNum(1)
       search.searchManga(input, 1, 'FAVOURITES_DESC')
       .then((data) => {
         search.setDataManga(data.data)
