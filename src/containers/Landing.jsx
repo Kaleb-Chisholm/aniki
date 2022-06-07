@@ -1,16 +1,39 @@
-import { Center, Stack, Text } from "@chakra-ui/react"
+import { Center, Heading, Stack, Text } from '@chakra-ui/react'
+import styled from 'styled-components'
+import { keyframes } from 'styled-components'
+
 export function Landing() {
+
+  const gradient = keyframes`{
+    0% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+  }`
+
+  const AnimatedGradientText = styled.p`
+    background-color: #FFFFFF;
+    animation: ${gradient} 5s ease-in-out infinite;
+    background: linear-gradient(to right, #BB90FB, #CFB5F7, #20DDCB, #97DBD5);
+    background-size: 300%;
+    font-size: 72pt;
+    font-weight: bold;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+  `
+
   return (
     <Center>
       <Stack mt='50px'>
-        <Text as='h1' fontSize='6xl' fontWeight='bold' textAlign='center'>
-          Welcome to <span className='textPop'>Aniki</span>
-        </Text>
-        <Text as='h1' fontSize='3xl' fontWeight='bold' textAlign='center'>
+        <AnimatedGradientText>
+            Welcome to Aniki
+        </AnimatedGradientText>
+        <Text fontSize='5xl' fontWeight='bold' textAlign='center'>
           The Anime Wiki
         </Text>
-        <Text textAlign='center'>
-          Your for everything anime and manga
+        <Text fontSize='3xl' textAlign='center'>
+          Browse countless anime and manga!
         </Text>
       </Stack>
     </Center>

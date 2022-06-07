@@ -43,8 +43,8 @@ export function SearchProvider({ children }) {
             native
           }
           episodes
+          description
           duration
-          chapters
           isAdult
           genres
           seasonYear
@@ -82,6 +82,9 @@ export function SearchProvider({ children }) {
               }
             }
           }
+          tags {
+            name
+          }
         }
       }
     }
@@ -108,31 +111,52 @@ export function SearchProvider({ children }) {
     return fetch(url, options).then(handleResponse)            
   }
 
-  const searchManga = (searchTerm) => {
+  const searchManga = (searchTerm, page, sort, filter) => {
     var query = `
-    query ($page: Int, $perPage: Int, $search: String) {
+    query ($page: Int, $perPage: Int, $search: String, $sort: [MediaSort]) {
       Page(page: $page, perPage: $perPage) {
         pageInfo {
           total
           perPage
+          currentPage
+          hasNextPage
         }
-        media(search: $search, type: MANGA, sort: FAVOURITES_DESC) {
+        media(search: $search, type: MANGA, sort: $sort) {
           id
           title {
             romaji
             english
             native
           }
+          volumes
           chapters
+          description
           isAdult
+          tags {
+            name
+          }
           genres
           type
           startDate {
             year
           }
-          seasonYear
           averageScore
           popularity
+          staff {
+            edges {
+              role
+              node {
+                name {
+                  first
+                  middle
+                  last
+                  full
+                  native
+                  userPreferred
+                }
+              }
+            }
+          }
           characters(page: 1, role: MAIN) {
             edges {
               node {
@@ -156,7 +180,8 @@ export function SearchProvider({ children }) {
     `
     var variables = {
         search: searchTerm,
-        page: 1,
+        page: page,
+        sort: sort,
         perPage: 20,
     };
 

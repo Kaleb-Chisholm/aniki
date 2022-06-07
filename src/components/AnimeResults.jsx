@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from 'react'
 import { SearchContext } from '../context/search'
-import { Box, Center, Grid, Heading } from '@chakra-ui/react'
+import { Box, Button, Center, Grid, Heading, Text } from '@chakra-ui/react'
 import { AnimeCard } from './AnimeCard'
-import { SearchForm } from './SearchForm'
+import { AnimeSearch } from '../containers/anime/AnimeSearch'
 
 export function AnimeResults() {
 
@@ -14,6 +14,7 @@ export function AnimeResults() {
     if (search.animeData === undefined || search.animeData.length === 0) {
       try { 
         search.setDataAnime(JSON.parse(localStorage.getItem('myData')))
+        search.setSearch(localStorage.getItem('myInput'))
         setDataExists(true)
       } catch (error) {
         console.log(error)
@@ -25,10 +26,29 @@ export function AnimeResults() {
     }
   }, [search])
 
+  // const goNextPage = () => {
+  //   const item = search.getSearch()
+  //   const page = search.animeData.Page.pageInfo.currentPage
+  //   search.searchManga(item, page, 'FAVOURITES_DESC')
+  //   .then((data) => {
+  //     search.setDataManga(data.data)
+  //     console.log(data.data)
+  //     localStorage.setItem('myData', JSON.stringify(data.data))
+  //     console.log(data.data)
+  //   })
+  // }
+
   return (
     <Box>
-      <SearchForm />
-      <Heading>{`Showing Results for "${search.getSearch()}"`}</Heading>
+      <Center>
+        <Box w={{base: '70vw', md: '50vw'}}>
+          <AnimeSearch>
+            <Heading fontSize='2xl' mt='10px'>
+              {`Showing Results for "${search.getSearch()}"`}
+            </Heading>
+          </AnimeSearch>
+        </Box>
+      </Center>
       {
         dataExists 
         ? 
@@ -37,7 +57,7 @@ export function AnimeResults() {
             <Grid 
               templateColumns='repeat(auto-fill, minmax(215px, 1fr))'
               gap={2} 
-              m='50px' 
+              mt='50px' 
               w='full'
             >
               {
@@ -46,9 +66,17 @@ export function AnimeResults() {
                 ))
               }
             </Grid>
+            {/* <Button onClick={goNextPage()}>
+              Next Page
+            </Button> */}
           </Center>
         )
-        : 'Data does not exist'
+        : 
+        (
+          <Center>
+            <Text>Data does not exist</Text>
+          </Center>
+        )
       }
     </Box>
   )

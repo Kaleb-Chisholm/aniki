@@ -15,10 +15,10 @@ import {
   IoSearchSharp, 
   IoTrendingUpSharp, 
   IoCalendarOutline, 
-  IoBookOutline, 
-  IoTvOutline,
-  IoPeopleOutline,
-  IoInformationCircleOutline,
+  // IoBookOutline, 
+  // IoTvOutline,
+  // IoPeopleOutline,
+  // IoInformationCircleOutline,
   IoHomeOutline
 } from 'react-icons/io5'
 
@@ -97,14 +97,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
       w={{ base: 'full', md: 60 }}
       pos='fixed'
       h='full'
-      p='15px'
       {...rest}
     >
       <Box 
-        bg='primaryColor' 
+        bg='grey.800' 
         h='full' 
         overflowY='auto'
-        borderRadius='2xl'
         shadow='0px 0px 10px black'
       >
         <Flex h='20' alignItems='center' mx='8' justifyContent='space-between'>
@@ -115,17 +113,18 @@ const SidebarContent = ({ onClose, ...rest }) => {
           >
             Aniki
           </Text>
-          <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+          <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose}/>
         </Flex>
         {
           SidebarItems.map((item) => (
-            <>
+            <Box key={item.title}>
               <Text 
                 key={item.title}
                 ml='30px'
                 mt='15px'
-                color='#FFF07C'
+                color='primaryBright'
                 fontWeight='bold'
+                letterSpacing='wide'
               >
                 {item.title}
               </Text>
@@ -136,7 +135,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
                   </NavItem>
                 ))
               }
-            </>
+            </Box>
           ))
         }
       </Box>

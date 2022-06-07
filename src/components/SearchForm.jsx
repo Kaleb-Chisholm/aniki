@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom'
 
 export function SearchForm() {
 
-  // const toast = useToast()
+  const toast = useToast()
   const navigate = useNavigate()
   const search = useContext(SearchContext)
   const isAnime = search.getIsAnime()
   const [input, setInput] = useState([])
+  const [loading, setLoading] = useState(false)      // results loading
 
   const handleChange = (e) => {
     setInput(e.target.value)
@@ -19,21 +20,49 @@ export function SearchForm() {
   const handleSearch = e => {
     e.preventDefault()
 
+    if (!input || /^\s*$/.test(input)) {
+      toast({
+        title: 'Invalid Input',
+        description: "Prompt is Required",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
+      return
+    }
+    if (input.length > 100) {
+      toast({
+        title: 'Invalid Input',
+        description: "Prompt exceeded maximum length of 100 characters",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
+      return
+    }
+
+    setLoading(true)
+
     if (search.getIsAnime() === true) {
       search.setSearch(input)
+      localStorage.setItem('myInput', input)
       search.searchAnime(input)
       .then((data) => {
         search.setDataAnime(data.data)
         console.log(data.data)
         localStorage.setItem('myData', JSON.stringify(data.data))
+        setLoading(false)
         navigate('/anime-results')
       })
     } else {
-      search.searchManga(input)
+      search.setSearch(input)
+      localStorage.setItem('myInput', input)
+      search.searchManga(input, 1, 'FAVOURITES_DESC')
       .then((data) => {
         search.setDataManga(data.data)
         console.log(data.data)
         localStorage.setItem('myData', JSON.stringify(data.data))
+        setLoading(false)
         navigate('/manga-results')
       })
     }
@@ -46,9 +75,11 @@ export function SearchForm() {
         <GridItem>
           <Input
             id='search' 
-            type='search' 
-            bg='white'
+            bg='grey.300'
+            type='search'
             borderRadius='full'
+            border='0pt'
+            shadow='0px 0px 10px black'
             placeholder={`Search for ${isAnime ? 'Anime' : 'Manga'}`}
             value={input}
             onChange={handleChange}
@@ -60,7 +91,8 @@ export function SearchForm() {
             type='submit'
             onClick={handleSearch}
             ml={{md: '10px'}}
-            variant='ghost'
+            variant='searchButton'
+            isLoading={loading}
           >
             <AiOutlineSearch fontSize='20pt'/>
           </Button>

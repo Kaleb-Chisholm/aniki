@@ -16,13 +16,19 @@ code {
 }
 
 .textPop {
-  color: #FFF07C;
+  color: #BB90FB;
 }
 
 .showDate {
   font-weight: normal;
   margin-left: 5px;
   font-size: 12pt;
+}
+
+.showDateLarge {
+  font-weight: normal;
+  margin-left: 5px;
+  font-size: 18pt;
 }
 
 .showDuration {

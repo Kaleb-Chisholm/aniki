@@ -2,50 +2,40 @@ import {
   Tooltip, 
   Image, 
   Text,
-  CircularProgress,
-  CircularProgressLabel,
-  HStack,
   Grid,
-  GridItem
+  GridItem,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  useDisclosure,
+  Button,
+  Heading,
+  ModalCloseButton
 } from '@chakra-ui/react'
+import { SingleAnime } from './SingleAnime'
+
 
 export function AnimeCard(props) {
 
-  const data = props.anime
-  // console.log(data)
-
-
-  const setRatingColor = (score) => {
-    if (score >= 0 && score <= 25) {
-      return 'red'
-    } else if (score > 25 && score <= 50) {
-      return 'orange'
-    } else if (score > 50 && score <= 75) {
-      return 'yellow'
-    } else {
-      return 'green'
-    }
-  }
-
-  const year = (data.seasonYear || ''),
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const data = props.anime,
+        year = (data.seasonYear || ''),
         image = (data.coverImage.large 
                 || data.coverImage.extraLarge 
                 || data.coverImage.medium),
-        genres = (data.genres || []),
-        // studios = setStudios(data.studios.edges),
-        // length = setLength(data),
-        adult = (data.isAdult || false),
-        score = data.averageScore,
-        ratingColor = setRatingColor(score)
+        adult = (data.isAdult || false)
   
   let title = (data.title.english || data.title.romaji)
   let fullTitle = title
-
   if (title.length >= 30) {
-    title = title.substring(0,30) + '...'
+    title = `${title.substring(0,30)}...`
   }
 
   return (
+    <>
     <Grid
       transitionDuration='0.5s'
       cursor='pointer'
@@ -53,20 +43,39 @@ export function AnimeCard(props) {
         transform:'scale(1.05)',
         cursor: 'hand'
       }}
+      onClick={onOpen}
+      w='fit-content'
+      borderRadius='3xl'
     >
       <GridItem>
         <Image 
           src={image}
           alt='anime-poster'
           w='215px' h='280px'
-          shadow='0px 0px 5px black'
+          shadow='0px 0px 10px black'
+          filter={adult && 'blur(5px)'}
         />
+        {
+          adult &&
+          <Text 
+            position='absolute' 
+            mt='-140px' ml='55px' 
+            bg='red' 
+            w='fit-content' 
+            p='2px 10px' 
+            borderRadius='3xl'
+            fontWeight='bold'
+            shadow='0px 0px 10px black'
+          >
+            ADULT 18+
+          </Text>
+        }
       </GridItem>
       <GridItem>
         <Tooltip 
           label={fullTitle} 
           placement='top-start' 
-          bg='primaryColor' 
+          bg='boxGradient' 
           maxW='215px'
         >
           <Text
@@ -82,6 +91,36 @@ export function AnimeCard(props) {
         </Tooltip>
       </GridItem>
     </Grid>
+    <Modal 
+      preserveScrollBarGap isOpen={isOpen} 
+      onClose={onClose} 
+      scrollBehavior='outside' 
+      size='xl'
+      autoFocus={false}
+      >
+      <ModalOverlay />
+      <ModalContent 
+        bg='boxGradient'
+        borderRadius='3xl'
+      >
+        <ModalHeader>
+          <Heading fontSize='3xl'>
+            {fullTitle.toUpperCase()}
+            {' '}
+            <span className='showDateLarge'>{year}</span>
+          </Heading>
+        </ModalHeader>
+        <ModalBody>
+          <SingleAnime data={data}/>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant='modalClose' onClick={onClose}>
+            Close
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+    </>
     // <Grid 
     //   bg='cardColor' 
     //   maxW='fit-content' 
