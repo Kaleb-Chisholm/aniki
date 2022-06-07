@@ -10,10 +10,11 @@ import { AnimeList } from './containers/lists/AnimeList'
 import { MangaList } from './containers/lists/MangaList'
 import { MyFriends } from './containers/community/MyFriends'
 import { Forum } from './containers/community/Forum'
-import { AnimeResults } from './components/AnimeResults'
-import { MangaResults } from './components/MangaResults'
+import { AnimeResults } from './components/anime/AnimeResults'
+import { MangaResults } from './components/manga/MangaResults'
 import { SearchProvider } from './search/SearchProvider'
 import './App.css';
+import { TopAnimeResults } from './components/anime/TopAnimeResults'
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
         <Route path='/forum' element={<Page><Forum /></Page>}/>
 
         <Route path='/anime-results' element={<Page><AnimeResults /></Page>}/>
+        <Route path='/top-anime-results' element={<Page><TopAnimeResults /></Page>}/>
         <Route path='/manga-results' element={<Page><MangaResults /></Page>}/>
       </Routes>
     </BrowserRouter>

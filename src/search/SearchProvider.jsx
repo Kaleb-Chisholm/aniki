@@ -27,9 +27,9 @@ export function SearchProvider({ children }) {
     });
   }
 
-  const searchAnime = (searchTerm, page, sort, filter) => {
+  const searchAnime = (searchTerm, page, sort) => {
     var query = `
-    query ($page: Int, $perPage: Int, $search: String) {
+    query ($page: Int, $perPage: Int, $search: String, $sort: [MediaSort]) {
       Page(page: $page, perPage: $perPage) {
         pageInfo {
           total
@@ -37,7 +37,7 @@ export function SearchProvider({ children }) {
           currentPage
           hasNextPage
         }
-        media(search: $search, type: ANIME, sort: FAVOURITES_DESC) {
+        media(search: $search, type: ANIME, sort: $sort) {
           id
           title {
             romaji
@@ -94,6 +94,7 @@ export function SearchProvider({ children }) {
     var variables = {
         search: searchTerm,
         page: page,
+        sort: sort,
         perPage: 20,
     };
 
@@ -113,7 +114,7 @@ export function SearchProvider({ children }) {
     return fetch(url, options).then(handleResponse)            
   }
 
-  const searchManga = (searchTerm, page, sort, filter) => {
+  const searchManga = (searchTerm, page, sort) => {
     var query = `
     query ($page: Int, $perPage: Int, $search: String, $sort: [MediaSort]) {
       Page(page: $page, perPage: $perPage) {
@@ -203,6 +204,92 @@ export function SearchProvider({ children }) {
     return fetch(url, options).then(handleResponse)            
   }
 
+  const topAnime = (page, sort) => {
+    var query = `
+    query ($page: Int, $perPage: Int, $sort: [MediaSort]) {
+      Page(page: $page, perPage: $perPage) {
+        pageInfo {
+          total
+          perPage
+          currentPage
+          hasNextPage
+        }
+        media(type: ANIME, sort: $sort) {
+          id
+          title {
+            romaji
+            english
+            native
+          }
+          episodes
+          description
+          duration
+          isAdult
+          genres
+          seasonYear
+          averageScore
+          popularity
+          characters(page: 1, role: MAIN) {
+            edges {
+              node {
+                id
+                name {
+                  first
+                  last
+                }
+              }
+              role
+              voiceActors (language: JAPANESE) {
+                id
+                name {
+                  first
+                  last
+                }
+              }
+            }
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          studios {
+            edges {
+              id
+              node {
+                name
+              }
+            }
+          }
+          tags {
+            name
+          }
+        }
+      }
+    }
+    `
+    var variables = {
+        page: page,
+        sort: sort,
+        perPage: 20,
+    };
+
+    var url = 'https://graphql.anilist.co',
+        options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+
+    return fetch(url, options).then(handleResponse)            
+  }
+
   return (
     <SearchContext.Provider 
       value={{ 
@@ -219,7 +306,8 @@ export function SearchProvider({ children }) {
         getIsAnime,
         pageNum,
         setPageNum,
-        getPageNum
+        getPageNum,
+        topAnime
       }}
     >
       { children }

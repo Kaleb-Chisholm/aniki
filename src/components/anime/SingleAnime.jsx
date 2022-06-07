@@ -28,7 +28,7 @@ export function SingleAnime(props) {
   }
 
   const setDescription = (description) => {
-    if (description != null) {
+    if (description != null && !(/^\s*$/.test(description))) {
       return ((description).replaceAll('<br>', ''))
     } else {
       return 'No description available'
@@ -73,6 +73,14 @@ export function SingleAnime(props) {
     return tagList
   }
 
+  const setScore = (score) => {
+    if (score === null) {
+      return 'Reviews unavailable'
+    } else {
+      return (score + '%')
+    }
+  }
+
   const setLength = (data) => {
     console.log(data)
     if (data.episodes === 1) {
@@ -89,8 +97,7 @@ export function SingleAnime(props) {
         genres = (data.genres || []),
         studios = setStudios(data.studios.edges),
         adult = (data.isAdult || false),
-        episodes = data.episodes,
-        score = data.averageScore,
+        score = setScore(data.averageScore),
         description = setDescription(data.description),
         stars = setStars(data.characters.edges),
         tags = setTags(data.tags),
@@ -163,7 +170,7 @@ export function SingleAnime(props) {
             }
           </Stack>
           <Text fontWeight='semibold'>Rating:</Text>
-          <Text>{score}%</Text>
+          <Text>{score}</Text>
         </Grid>
       </Box>
       <GridItem colSpan={2}>

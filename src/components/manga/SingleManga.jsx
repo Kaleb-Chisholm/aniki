@@ -12,7 +12,7 @@ import {
 export function SingleManga(props) {
 
   const setDescription = (description) => {
-    if (description != null) {
+    if (description != null && !(/^\s*$/.test(description))) {
       return ((description).replaceAll('<br>', ''))
     } else {
       return 'No description available'
@@ -56,13 +56,21 @@ export function SingleManga(props) {
     return tagList
   }
 
+  const setScore = (score) => {
+    if (score === null) {
+      return 'Reviews unavailable'
+    } else {
+      return (score + '%')
+    }
+  }
+
   const data = props.data,
         image = (data.coverImage.large 
                 || data.coverImage.extraLarge 
                 || data.coverImage.medium),
         genres = (data.genres || []),
         adult = (data.isAdult || false),
-        score = ((data.averageScore) || 'Reviews unavailable'),
+        score = setScore(data.averageScore),
         description = setDescription(data.description),
         creator = setStaff(data.staff.edges),
         volumes = (data.volumes || 'Unavailable'),
@@ -126,7 +134,7 @@ export function SingleManga(props) {
           <Text fontWeight='semibold'>Chapters:</Text>
           <Text>{chapters}</Text>
           <Text fontWeight='semibold'>Rating:</Text>
-          <Text>{score}%</Text>
+          <Text>{score}</Text>
         </Grid>
       </Box>
       <GridItem colSpan={2}>

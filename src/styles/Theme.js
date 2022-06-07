@@ -19,11 +19,6 @@ export const myTheme = extendTheme ({
     secondaryBright: '#20DDCB',
     secondaryDim: '#0F6159',
     boxGradient: 'linear-gradient(45deg, #2E2E2E, #515151)',
-    // primaryShadow: '#4B494D',
-    // menuColor: '#8D78F7',
-    // cardColor: '#EDEADF',
-    // textHoverColor: '#F39B6D',
-    // primaryBg: '#29282A',
   },
   styles: {
     global: () => ({
@@ -70,6 +65,16 @@ export const myTheme = extendTheme ({
           bg: 'secondaryDim',
           shadow: '0px 0px 10px black',
           w: '50px',
+          my: '20px',
+          _hover: {
+            bg: 'primaryBright',
+          }
+        },
+        'categoryBtn': {
+          color: 'black',
+          borderRadius: '3xl',
+          bg: 'secondaryBright',
+          shadow: '0px 0px 10px black',
           my: '20px',
           _hover: {
             bg: 'primaryBright',

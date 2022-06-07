@@ -1,18 +1,16 @@
 import { 
-  Box, 
-  Button, 
+  Box,
   Center, 
   Grid, 
-  Heading, 
-  HStack, 
+  Heading,
   Stack, 
   Text 
 } from '@chakra-ui/react'
 import { useContext, useState, useEffect } from 'react'
-import { SearchContext } from '../context/search'
+import { SearchContext } from '../../context/search'
 import { AnimeCard } from './AnimeCard'
-import { AnimeSearch } from '../containers/anime/AnimeSearch'
-import { IoArrowBackSharp, IoArrowForwardSharp } from 'react-icons/io5'
+import { AnimeSearch } from '../../containers/anime/AnimeSearch'
+import { BackForthButtons } from '../BackForthButtons'
 
 export function AnimeResults() {
   const search = useContext(SearchContext)              // Context
@@ -58,9 +56,12 @@ export function AnimeResults() {
     const item = search.getSearch()
     const page = parseInt(search.getPageNum()) + 1
 
+    var mySelect = document.getElementById('sortSelect')
+    var selected = mySelect.selectedOptions[0].value
+
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.searchAnime(item, page, "FAVOURITES_DESC")
+    search.searchAnime(item, page, selected)
     .then((data) => {
       search.setDataAnime(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
@@ -77,9 +78,12 @@ export function AnimeResults() {
     const item = search.getSearch()
     const page = parseInt(search.getPageNum()) - 1
 
+    var mySelect = document.getElementById('sortSelect')
+    var selected = mySelect.selectedOptions[0].value
+
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.searchAnime(item, page, "FAVOURITES_DESC")
+    search.searchAnime(item, page, selected)
     .then((data) => {
       search.setDataAnime(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
@@ -90,7 +94,6 @@ export function AnimeResults() {
   return (
     <Box>
       <Center>
-
         <Box w={{base: '70vw', md: '50vw'}}>
           <AnimeSearch>
             <Heading fontSize='2xl' mt='10px'>
@@ -109,56 +112,20 @@ export function AnimeResults() {
               gap={2} 
               mt='50px' 
               w='full'
-              >
+            >
               {
                 search.animeData.Page.media.map((item) => (
                   <AnimeCard key={item.id} anime={item} />
                   ))
                 }
             </Grid>
-            <HStack justify='space-between'>
-              <Box>
-                {
-                  hasPrev ? (
-                    <Button 
-                      variant='backForthBtn' 
-                      onClick={goBackPage}
-                    >
-                      <IoArrowBackSharp />
-                    </Button>
-                  ) :
-                  (
-                    <Button 
-                      variant='backForthBtnDim' 
-                      onClick={goBackPage}
-                    >
-                      <IoArrowBackSharp />
-                    </Button>
-                  )
-                }
-              </Box>
-              <Text>{search.getPageNum()}</Text>
-              <Box>
-                {
-                  hasNext ? (
-                    <Button 
-                      variant='backForthBtn' 
-                      onClick={goNextPage}
-                    >
-                      <IoArrowForwardSharp />
-                    </Button>
-                  ) :
-                  (
-                    <Button 
-                      variant='backForthBtnDim' 
-                      onClick={goNextPage}
-                    >
-                      <IoArrowForwardSharp />
-                    </Button>
-                  )
-                }
-              </Box>
-            </HStack>
+            <BackForthButtons 
+              hasPrev={hasPrev}
+              hasNext={hasNext} 
+              pageNum={search.getPageNum()}
+              goBackPage={goBackPage}
+              goNextPage={goNextPage}
+            />
           </Stack>
         )
         : 

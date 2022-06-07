@@ -34,3 +34,7 @@ code {
 .showDuration {
   margin-left: 15px;
 }
+
+option {
+  background-color: #515151 !important;
+}

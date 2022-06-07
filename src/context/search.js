@@ -14,4 +14,5 @@ export const SearchContext = createContext({
   getIsAnime: () => {},
   getPageNum: () => {},
   setPageNum: () => {},
+  topAnime: () => {},
 })

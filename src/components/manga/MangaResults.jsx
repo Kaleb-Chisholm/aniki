@@ -1,9 +1,10 @@
 import { useContext, useState, useEffect } from 'react'
-import { SearchContext } from '../context/search'
+import { SearchContext } from '../../context/search'
 import { Box, Button, Center, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react'
-import { MangaSearch } from '../containers/manga/MangaSearch'
+import { MangaSearch } from '../../containers/manga/MangaSearch'
 import { MangaCard } from './MangaCard'
 import { IoArrowBackSharp, IoArrowForwardSharp } from 'react-icons/io5'
+import { BackForthButtons } from '../BackForthButtons'
 
 export function MangaResults() {
 
@@ -89,9 +90,7 @@ export function MangaResults() {
         </Box>
       </Center>
       {
-        dataExists 
-        ? 
-        (
+        dataExists ? (
           <Stack>
             <Grid 
               templateColumns='repeat(auto-fill, minmax(215px, 1fr))'
@@ -105,53 +104,15 @@ export function MangaResults() {
                 ))
               }
             </Grid>
-            <HStack justify='space-between'>
-              <Box>
-                {
-                  hasPrev ? (
-                    <Button 
-                      variant='backForthBtn' 
-                      onClick={goBackPage}
-                    >
-                      <IoArrowBackSharp />
-                    </Button>
-                  ) :
-                  (
-                    <Button 
-                      variant='backForthBtnDim' 
-                      onClick={goBackPage}
-                    >
-                      <IoArrowBackSharp />
-                    </Button>
-                  )
-                }
-              </Box>
-              <Text>{search.getPageNum()}</Text>
-              <Box>
-                {
-                  hasNext ? (
-                    <Button 
-                      variant='backForthBtn' 
-                      onClick={goNextPage}
-                    >
-                      <IoArrowForwardSharp />
-                    </Button>
-                  ) :
-                  (
-                    <Button 
-                      variant='backForthBtnDim' 
-                      onClick={goNextPage}
-                    >
-                      <IoArrowForwardSharp />
-                    </Button>
-                  )
-                }
-              </Box>
-            </HStack>
+            <BackForthButtons 
+              hasPrev={hasPrev}
+              hasNext={hasNext} 
+              pageNum={search.getPageNum()}
+              goBackPage={goBackPage}
+              goNextPage={goNextPage}
+            />
           </Stack>
-        )
-        : 
-        (
+        ) : (
           <Center>
             <Text>Data does not exist</Text>
           </Center>
