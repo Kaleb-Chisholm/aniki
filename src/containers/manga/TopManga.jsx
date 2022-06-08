@@ -1,4 +1,4 @@
-import { Box, Button, Center, Heading, HStack } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, Heading, Stack } from '@chakra-ui/react'
 import { useContext, useState} from 'react'
 import { SearchContext } from '../../context/search'
 import { useNavigate } from 'react-router-dom'
@@ -49,33 +49,33 @@ export function TopManga({ children }) {
 
   return (
     <Center>
-      <Box 
-        w={{base: '70vw', md: '50vw'}} 
-        bg='boxGradient' 
-        px='20px' py='10px'
-        mt='20px'
-        borderRadius='3xl'
-        shadow='0px 0px 10px black'
-      >
-        <Heading mb='10px'>Top <span className='textPop'>Manga</span></Heading>
-        <HStack justify='space-evenly' wrap='wrap'>
-          {
-            categoryData.map((cat) =>
-              <Button 
-                key={cat.value}
-                onClick={handleClick}
-                isLoading={loading}
-                value={cat.value}
-                my='10px'
-                variant='categoryBtn'
-              >
-                {cat.title}
-              </Button>
-            )
-          }
-        </HStack>
+      <Stack w='100%'>
+        <Box
+          bg='boxGradient' 
+          px='20px' py='10px'
+          borderRadius='3xl'
+          shadow='0px 0px 10px black'
+        >
+          <Heading mb='10px'>Top <span className='textPop'>Manga</span></Heading>
+          <Flex direction={{base: 'column', md: 'row'}} justify='space-evenly' wrap='wrap'>
+            {
+              categoryData.map((cat) =>
+                <Button 
+                  key={cat.value}
+                  onClick={handleClick}
+                  isLoading={loading}
+                  value={cat.value}
+                  my='10px'
+                  variant='categoryBtn'
+                >
+                  {cat.title}
+                </Button>
+              )
+            }
+          </Flex>
+        </Box>
         {children}
-      </Box>
+      </Stack>
     </Center>
   )
 }

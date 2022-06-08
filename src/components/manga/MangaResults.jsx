@@ -81,9 +81,9 @@ export function MangaResults() {
   return (
     <Box>
       <Center>
-        <Box w={{base: '70vw', md: '50vw'}}>
+        <Box w='100%'>
           <MangaSearch>
-            <Heading fontSize='2xl' mt='10px'>
+            <Heading fontSize='2xl' pt='10px' pl='20px'>
               {`Showing Results for "${search.getSearch()}"`}
             </Heading>
           </MangaSearch>

@@ -95,9 +95,9 @@ export function TopAnimeResults() {
   return (
     <Box>
       <Center>
-        <Box w={{base: '70vw', md: '50vw'}}>
+        <Box w='100%'>
           <TopAnime>
-            <Heading fontSize='2xl' mt='10px'>
+            <Heading fontSize='2xl' pt='10px' pl='20px'>
               {`Showing Results for "${convertCategory(search.getSearch())}"`}
             </Heading>
           </TopAnime>

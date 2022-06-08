@@ -13,9 +13,10 @@ import { Forum } from './containers/community/Forum'
 import { AnimeResults } from './components/anime/AnimeResults'
 import { MangaResults } from './components/manga/MangaResults'
 import { SearchProvider } from './search/SearchProvider'
-import './App.css';
+import './App.css'
 import { TopAnimeResults } from './components/anime/TopAnimeResults'
 import { TopMangaResults } from './components/manga/TopMangaResults'
+import { NoResults } from './components/NoResults'
 
 export default function App() {
   return (
@@ -25,13 +26,13 @@ export default function App() {
         <Route path='/' element={<Page><Landing /></Page>}/>
 
         {/* ANIME ROUTES */}
-        <Route path='/anime-search' element={<Page><AnimeSearch /></Page>}/>
-        <Route path='/top-anime' element={<Page><TopAnime /></Page>}/>
-        <Route path='/seasonal-anime' element={<Page><SeasonalAnime /></Page>}/>
+        <Route path='/anime-search' element={<Page><AnimeSearch><NoResults/></AnimeSearch></Page>}/>
+        <Route path='/top-anime' element={<Page><TopAnime><NoResults/></TopAnime></Page>}/>
+        <Route path='/seasonal-anime' element={<Page><SeasonalAnime><NoResults/></SeasonalAnime></Page>}/>
         
         {/* MANGA ROUTES */}
-        <Route path='/manga-search' element={<Page><MangaSearch /></Page>}/>
-        <Route path='/top-manga' element={<Page><TopManga /></Page>}/>
+        <Route path='/manga-search' element={<Page><MangaSearch><NoResults/></MangaSearch></Page>}/>
+        <Route path='/top-manga' element={<Page><TopManga><NoResults/></TopManga></Page>}/>
 
         {/* LIST ROUTES */}
         <Route path='/anime-list' element={<Page><AnimeList /></Page>}/>

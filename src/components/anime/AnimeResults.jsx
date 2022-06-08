@@ -94,9 +94,9 @@ export function AnimeResults() {
   return (
     <Box>
       <Center>
-        <Box w={{base: '70vw', md: '50vw'}}>
+        <Box w='100%'>
           <AnimeSearch>
-            <Heading fontSize='2xl' mt='10px'>
+            <Heading fontSize='2xl' pt='10px' pl='20px'>
               {`Showing Results for "${search.getSearch()}"`}
             </Heading>
           </AnimeSearch>

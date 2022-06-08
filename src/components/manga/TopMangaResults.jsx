@@ -96,9 +96,9 @@ export function TopMangaResults() {
   return (
     <Box>
       <Center>
-        <Box w={{base: '70vw', md: '50vw'}}>
+        <Box w='100%'>
           <TopManga>
-            <Heading fontSize='2xl' mt='10px'>
+            <Heading fontSize='2xl' pt='10px' pl='20px'>
             {`Showing Results for "${convertCategory(search.getSearch())}"`}
             </Heading>
           </TopManga>

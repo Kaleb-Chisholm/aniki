@@ -1,4 +1,4 @@
-import { Center, Heading, Stack, Text } from '@chakra-ui/react'
+import { Center, Stack, Text } from '@chakra-ui/react'
 import styled from 'styled-components'
 import { keyframes } from 'styled-components'
 
