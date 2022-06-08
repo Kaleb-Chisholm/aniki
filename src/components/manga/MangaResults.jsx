@@ -14,9 +14,9 @@ export function MangaResults() {
   const [hasNext, setHasNext] = useState(true)
 
   useEffect(() => {
-    if (search.mangaData === undefined || search.mangaData.length === 0) {
+    if (search.data === undefined || search.data.length === 0) {
       try { 
-        search.setDataManga(JSON.parse(localStorage.getItem('myData')))
+        search.setItem(JSON.parse(localStorage.getItem('myData')))
         search.setSearch(localStorage.getItem('myInput'))
         search.setPageNum(localStorage.getItem('myPage'))
         checkPages()
@@ -35,7 +35,7 @@ export function MangaResults() {
   
   // Check if there are available prev and next pages
   const checkPages = () => {
-    if (!search.mangaData.Page.pageInfo.hasNextPage) { setHasNext(false) } 
+    if (!search.data.Page.pageInfo.hasNextPage) { setHasNext(false) } 
     else { setHasNext(true) }
     if (parseInt(search.getPageNum()) === 1) { setHasPrev(false) } 
     else { setHasPrev(true) }
@@ -52,9 +52,9 @@ export function MangaResults() {
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.searchManga(item, page, "FAVOURITES_DESC")
+    search.search(item, false, true, 'MANGA', page, "FAVOURITES_DESC")
     .then((data) => {
-      search.setDataManga(data.data)
+      search.setItem(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
     })
   }
@@ -71,9 +71,9 @@ export function MangaResults() {
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.searchManga(item, page, "FAVOURITES_DESC")
+    search.search(item, false, true, 'MANGA', page, "FAVOURITES_DESC")
     .then((data) => {
-      search.setDataManga(data.data)
+      search.setItem(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
     })
   }
@@ -99,7 +99,7 @@ export function MangaResults() {
               w='full'
             >
               {
-                search.mangaData.Page.media.map((item) => (
+                search.data.Page.media.map((item) => (
                   <MangaCard key={item.id} manga={item} />
                 ))
               }

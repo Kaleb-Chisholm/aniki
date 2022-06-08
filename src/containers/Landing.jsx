@@ -17,6 +17,7 @@ export function Landing() {
     background-size: 300%;
     font-size: 72pt;
     font-weight: bold;
+    text-align: center;
     -webkit-background-clip: text;
     -moz-background-clip: text;
     -webkit-text-fill-color: transparent; 

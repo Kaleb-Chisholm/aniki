@@ -12,8 +12,7 @@ import {
   ModalBody,
   useDisclosure,
   Button,
-  Heading,
-  ModalCloseButton
+  Heading
 } from '@chakra-ui/react'
 import { SingleAnime } from './SingleAnime'
 

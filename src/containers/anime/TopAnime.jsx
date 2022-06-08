@@ -37,9 +37,9 @@ export function TopAnime({ children }) {
     localStorage.setItem('myTop', e.target.value)
     search.setPageNum(1)
 
-    search.topAnime(1, e.target.value)
+    search.topSearch(true, false, 'ANIME', 1, e.target.value)
     .then((data) => {
-      search.setDataAnime(data.data)
+      search.setItem(data.data)
       console.log(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
       setLoading(false)

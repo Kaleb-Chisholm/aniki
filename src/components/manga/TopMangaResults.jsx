@@ -1,30 +1,23 @@
-import { 
-  Box,
-  Center, 
-  Grid, 
-  Heading,
-  Stack, 
-  Text 
-} from '@chakra-ui/react'
 import { useContext, useState, useEffect } from 'react'
 import { SearchContext } from '../../context/search'
-import { AnimeCard } from './AnimeCard'
-import { AnimeSearch } from '../../containers/anime/AnimeSearch'
+import { Box, Center, Grid, Heading, Stack, Text } from '@chakra-ui/react'
+import { MangaCard } from './MangaCard'
 import { BackForthButtons } from '../BackForthButtons'
+import { TopManga } from '../../containers/manga/TopManga'
 
-export function AnimeResults() {
-  const search = useContext(SearchContext)              // Context
-  const [dataExists, setDataExists] = useState(false)   // States
+export function TopMangaResults() {
+
+  const search = useContext(SearchContext)
+  const [dataExists, setDataExists] = useState(false)
   const [hasPrev, setHasPrev] = useState(false)
   const [hasNext, setHasNext] = useState(true)
 
   // Effect
   useEffect(() => {
-    search.setIsAnime(true)
     if (search.data === undefined || search.data.length === 0) {
       try { 
         search.setItem(JSON.parse(localStorage.getItem('myData')))
-        search.setSearch(localStorage.getItem('myInput'))
+        search.setSearch(localStorage.getItem('myTop'))
         search.setPageNum(localStorage.getItem('myPage'))
         checkPages()
         setDataExists(true)
@@ -39,6 +32,7 @@ export function AnimeResults() {
     }
   }, [search])
 
+  
   // Check if there are available prev and next pages
   const checkPages = () => {
     if (!search.data.Page.pageInfo.hasNextPage) { setHasNext(false) } 
@@ -56,12 +50,9 @@ export function AnimeResults() {
     const item = search.getSearch()
     const page = parseInt(search.getPageNum()) + 1
 
-    var mySelect = document.getElementById('sortSelect')
-    var selected = mySelect.selectedOptions[0].value
-
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.search(item, true, false, 'ANIME', page, selected)
+    search.topSearch(false, true, 'MANGA', page, item)
     .then((data) => {
       search.setItem(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
@@ -78,34 +69,43 @@ export function AnimeResults() {
     const item = search.getSearch()
     const page = parseInt(search.getPageNum()) - 1
 
-    var mySelect = document.getElementById('sortSelect')
-    var selected = mySelect.selectedOptions[0].value
-
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.search(item, true, false, 'ANIME', page, selected)
+    search.topManga(page, item)
     .then((data) => {
-      search.setItem(data.data)
+      search.setDataManga(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
     })
   }
 
+  const convertCategory = (category) => {
+    if (category === 'TRENDING_DESC') {
+      return 'Trending Now'
+    }
+    if (category === 'SCORE_DESC') {
+      return 'Top Rated'
+    }
+    if (category === 'POPULARITY_DESC') {
+      return 'Popular Now'
+    }
+    if (category === 'FAVOURITES_DESC') {
+      return 'Top Favourites'
+    }
+  }
 
   return (
     <Box>
       <Center>
         <Box w={{base: '70vw', md: '50vw'}}>
-          <AnimeSearch>
+          <TopManga>
             <Heading fontSize='2xl' mt='10px'>
-              {`Showing Results for "${search.getSearch()}"`}
+            {`Showing Results for "${convertCategory(search.getSearch())}"`}
             </Heading>
-          </AnimeSearch>
+          </TopManga>
         </Box>
       </Center>
       {
-        dataExists 
-        ? 
-        (
+        dataExists ? (
           <Stack>
             <Grid 
               templateColumns='repeat(auto-fill, minmax(215px, 1fr))'
@@ -115,9 +115,9 @@ export function AnimeResults() {
             >
               {
                 search.data.Page.media.map((item) => (
-                  <AnimeCard key={item.id} anime={item} />
-                  ))
-                }
+                  <MangaCard key={item.id} manga={item} />
+                ))
+              }
             </Grid>
             <BackForthButtons 
               hasPrev={hasPrev}
@@ -127,9 +127,7 @@ export function AnimeResults() {
               goNextPage={goNextPage}
             />
           </Stack>
-        )
-        : 
-        (
+        ) : (
           <Center>
             <Text>Data does not exist</Text>
           </Center>

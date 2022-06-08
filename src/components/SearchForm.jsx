@@ -5,14 +5,36 @@ import {
   FormLabel,
   Grid, 
   GridItem, 
+  HStack, 
   Input, 
-  Select, 
+  Select,
   useToast 
 } from '@chakra-ui/react'
 import { useContext, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { SearchContext } from '../context/search'
 import { useNavigate } from 'react-router-dom'
+
+
+const genreData = [
+  'None',
+  'Action',
+  'Adventure',
+  'Comedy',
+  'Drama',
+  'Fantasy',
+  'Horror',
+  'Mystery',
+  'Psychological',
+  'Supernatural',
+  'Romance',
+  'Sci-Fi',
+  'Slice of Life',
+  'Thriller',
+  'Sports',
+  'Ecchi',
+  'Hentai',
+]
 
 export function SearchForm() {
 
@@ -21,6 +43,7 @@ export function SearchForm() {
   const search = useContext(SearchContext)
   const isAnime = search.getIsAnime()
   const [input, setInput] = useState([])
+  const [genre, setGenre] = useState('None')
   const [loading, setLoading] = useState(false)      // results loading
 
   const handleChange = (e) => {
@@ -59,33 +82,44 @@ export function SearchForm() {
     var mySelect = document.getElementById('sortSelect')
     var selected = mySelect.selectedOptions[0].value
 
-    console.log(selected)
+    const isAnime = search.getIsAnime(),
+          isManga = !(search.getIsAnime())
+    
+    let animeOrManga
 
-    if (search.getIsAnime() === true) {
-      search.searchAnime(input, 1, selected)
+    if (isAnime) { animeOrManga = 'ANIME' } 
+    else { animeOrManga = 'MANGA' }
+
+    if (genre === 'None') {
+      search.search(input, isAnime, isManga, animeOrManga, 1, selected)
       .then((data) => {
-        search.setDataAnime(data.data)
+        search.setItem(data.data)
         console.log(data.data)
         localStorage.setItem('myData', JSON.stringify(data.data))
         setLoading(false)
-        navigate('/anime-results')
+        if (isAnime) { navigate('/anime-results') } 
+        else { navigate('/manga-results') }
       })
     } else {
-      search.searchManga(input, 1, selected)
+      search.searchWithGenre(input, isAnime, isManga, animeOrManga, 1, selected, genre)
       .then((data) => {
-        search.setDataManga(data.data)
+        search.setItem(data.data)
         console.log(data.data)
         localStorage.setItem('myData', JSON.stringify(data.data))
         setLoading(false)
-        navigate('/manga-results')
+        if (isAnime) { navigate('/anime-results') } 
+        else { navigate('/manga-results') }
       })
     }
+  }
 
+  const setGenreSelection = (e) => {
+    setGenre(e.target.value)
   }
 
   return (
     <Box>
-      <Grid templateColumns='1fr auto'>
+      <Grid templateColumns='1fr auto' p='10px'>
         <GridItem>
           <Input
             id='search' 
@@ -112,28 +146,49 @@ export function SearchForm() {
           </Button>
         </GridItem>
         <GridItem colSpan={2}>
-          <FormControl my='10px'>
-            <FormLabel ml='10px' fontSize='xl'>Sort by:</FormLabel>
-            <Select 
-              id='sortSelect' 
-              placeholder='' 
-              borderRadius='3xl'
-              border='none'
-              bg='grey.500'
-              shadow='0px 0px 10px black'
-              color='white'
-            >
-              <option value='FAVOURITES_DESC'>Favourites Descending</option>
-              <option value='FAVOURITES'>Favourites Ascending</option>
-              <option value='TITLE_ENGLISH'>Alphabetical</option>
-              <option value='SCORE_DESC'>Score Descending</option>
-              <option value='SCORE'>Score Ascending</option>
-              <option value='POPULARITY_DESC'>Popularity Descending</option>
-              <option value='POPULARITY'>Popularity Ascending</option>
-              <option value='TRENDING_DESC'>Trending Descending</option>
-              <option value='TRENDING'>Trending Ascending</option>
-            </Select>
-          </FormControl>
+          <HStack wrap={{base: 'wrap', lg: 'nowrap'}}>
+            <FormControl py='10px'>
+              <FormLabel ml='10px' fontSize='xl'>Sort by:</FormLabel>
+              <Select 
+                id='sortSelect' 
+                placeholder='' 
+                borderRadius='3xl'
+                border='none'
+                bg='grey.500'
+                shadow='0px 0px 10px black'
+                color='white'
+              >
+                <option value='FAVOURITES_DESC'>Favourites Descending</option>
+                <option value='FAVOURITES'>Favourites Ascending</option>
+                <option value='TITLE_ENGLISH'>Alphabetical</option>
+                <option value='SCORE_DESC'>Score Descending</option>
+                <option value='SCORE'>Score Ascending</option>
+                <option value='POPULARITY_DESC'>Popularity Descending</option>
+                <option value='POPULARITY'>Popularity Ascending</option>
+                <option value='TRENDING_DESC'>Trending Descending</option>
+                <option value='TRENDING'>Trending Ascending</option>
+              </Select>
+            </FormControl>
+            <FormControl py='10px' ml={{base: '0px !important', lg: '10px !important'}}>
+              <FormLabel ml='10px' fontSize='xl'>Genre Filter:</FormLabel>
+              <Select 
+                id='genreSelect' 
+                placeholder='' 
+                borderRadius='3xl'
+                border='none'
+                bg='grey.500'
+                shadow='0px 0px 10px black'
+                color='white'
+                onChange={setGenreSelection}
+              >
+                {
+                  genreData.map((genre) => 
+                    <option key={genre} value={genre}>{genre}</option>
+                  )
+                }
+              </Select>
+            </FormControl>
+          </HStack>
         </GridItem>
       </Grid>
     </Box>

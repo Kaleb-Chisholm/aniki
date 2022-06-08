@@ -15,6 +15,7 @@ import { MangaResults } from './components/manga/MangaResults'
 import { SearchProvider } from './search/SearchProvider'
 import './App.css';
 import { TopAnimeResults } from './components/anime/TopAnimeResults'
+import { TopMangaResults } from './components/manga/TopMangaResults'
 
 export default function App() {
   return (
@@ -43,6 +44,8 @@ export default function App() {
         <Route path='/anime-results' element={<Page><AnimeResults /></Page>}/>
         <Route path='/top-anime-results' element={<Page><TopAnimeResults /></Page>}/>
         <Route path='/manga-results' element={<Page><MangaResults /></Page>}/>
+        <Route path='/top-manga-results' element={<Page><TopMangaResults /></Page>}/>
+
       </Routes>
     </BrowserRouter>
   </SearchProvider>

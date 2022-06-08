@@ -7,11 +7,8 @@ export function SearchProvider({ children }) {
   const setSearch = (data) => { setSearchInput(data) }
   const getSearch = () => { return searchInput }
 
-  const [animeData, setAnimeData] = useState([])
-  const setDataAnime = (data) => { setAnimeData(data) }
-
-  const [mangaData, setMangaData] = useState([])
-  const setDataManga = (data) => { setMangaData(data) }
+  const [data, setData] = useState([])
+  const setItem = (data) => { setData(data) }
 
   const [isAnimeSearch, setIsAnimeSearch] = useState()
   const getIsAnime = () => { return isAnimeSearch }
@@ -27,155 +24,76 @@ export function SearchProvider({ children }) {
     });
   }
 
-  const searchAnime = (searchTerm, page, sort) => {
+  const search = (searchTerm, isAnime, isManga, mangaOrAnime, page, sort) => {
     var query = `
-    query ($page: Int, $perPage: Int, $search: String, $sort: [MediaSort]) {
+    query ($page: Int, $perPage: Int, $search: String, $sort: [MediaSort], $isAnime: Boolean!, $isManga: Boolean!, $mangaOrAnime: MediaType) {
       Page(page: $page, perPage: $perPage) {
         pageInfo {
-          total
-          perPage
           currentPage
           hasNextPage
         }
-        media(search: $search, type: ANIME, sort: $sort) {
+        media(search: $search, type: $mangaOrAnime, sort: $sort) {
           id
-          title {
-            romaji
-            english
-            native
-          }
-          episodes
+          episodes @include(if: $isAnime)
+          volumes @include(if: $isManga)
+          chapters @include(if: $isManga)
           description
-          duration
+          duration @include(if: $isAnime)
           isAdult
           genres
-          seasonYear
+          seasonYear @include(if: $isAnime)
           averageScore
           popularity
-          characters(page: 1, role: MAIN) {
-            edges {
-              node {
-                id
-                name {
-                  first
-                  last
-                }
-              }
-              role
-              voiceActors (language: JAPANESE) {
-                id
-                name {
-                  first
-                  last
-                }
-              }
-            }
-          }
-          coverImage {
-            extraLarge
-            large
-            medium
-          }
-          studios {
-            edges {
-              id
-              node {
-                name
-              }
-            }
-          }
-          tags {
-            name
-          }
-        }
-      }
-    }
-    `
-    var variables = {
-        search: searchTerm,
-        page: page,
-        sort: sort,
-        perPage: 20,
-    };
-
-    var url = 'https://graphql.anilist.co',
-        options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: variables
-            })
-        };
-
-    return fetch(url, options).then(handleResponse)            
-  }
-
-  const searchManga = (searchTerm, page, sort) => {
-    var query = `
-    query ($page: Int, $perPage: Int, $search: String, $sort: [MediaSort]) {
-      Page(page: $page, perPage: $perPage) {
-        pageInfo {
-          total
-          perPage
-          currentPage
-          hasNextPage
-        }
-        media(search: $search, type: MANGA, sort: $sort) {
-          id
-          title {
-            romaji
-            english
-            native
-          }
-          volumes
-          chapters
-          description
-          isAdult
-          tags {
-            name
-          }
-          genres
-          type
-          startDate {
+          startDate @include(if: $isManga) {
             year
           }
-          averageScore
-          popularity
-          staff {
+          title {
+            romaji
+            english
+          }
+          staff @include(if: $isManga) {
             edges {
               role
               node {
                 name {
                   first
-                  middle
                   last
                   full
-                  native
-                  userPreferred
                 }
               }
             }
           }
-          characters(page: 1, role: MAIN) {
+          characters @include(if: $isAnime) {
             edges {
               node {
-                id
                 name {
                   first
                   last
                 }
               }
               role
+              voiceActors (language: JAPANESE) {
+                name {
+                  first
+                  last
+                }
+              }
             }
           }
           coverImage {
             extraLarge
             large
             medium
+          }
+          studios @include(if: $isAnime) {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+          tags {
+            name
           }
         }
       }
@@ -186,6 +104,9 @@ export function SearchProvider({ children }) {
         page: page,
         sort: sort,
         perPage: 20,
+        isAnime: isAnime,
+        isManga: isManga,
+        mangaOrAnime: mangaOrAnime
     };
 
     var url = 'https://graphql.anilist.co',
@@ -204,35 +125,48 @@ export function SearchProvider({ children }) {
     return fetch(url, options).then(handleResponse)            
   }
 
-  const topAnime = (page, sort) => {
+  const topSearch = (isAnime, isManga, mangaOrAnime, page, sort) => {
     var query = `
-    query ($page: Int, $perPage: Int, $sort: [MediaSort]) {
+    query ($page: Int, $perPage: Int, $sort: [MediaSort], $isAnime: Boolean!, $isManga: Boolean!, $mangaOrAnime: MediaType) {
       Page(page: $page, perPage: $perPage) {
         pageInfo {
-          total
-          perPage
           currentPage
           hasNextPage
         }
-        media(type: ANIME, sort: $sort) {
+        media(type: $mangaOrAnime, sort: $sort) {
           id
+          episodes @include(if: $isAnime)
+          volumes @include(if: $isManga)
+          chapters @include(if: $isManga)
+          description
+          duration @include(if: $isAnime)
+          isAdult
+          genres
+          seasonYear @include(if: $isAnime)
+          averageScore
+          popularity
+          startDate @include(if: $isManga) {
+            year
+          }
           title {
             romaji
             english
-            native
           }
-          episodes
-          description
-          duration
-          isAdult
-          genres
-          seasonYear
-          averageScore
-          popularity
-          characters(page: 1, role: MAIN) {
+          staff @include(if: $isManga) {
+            edges {
+              role
+              node {
+                name {
+                  first
+                  last
+                  full
+                }
+              }
+            }
+          }
+          characters @include(if: $isAnime) {
             edges {
               node {
-                id
                 name {
                   first
                   last
@@ -240,7 +174,6 @@ export function SearchProvider({ children }) {
               }
               role
               voiceActors (language: JAPANESE) {
-                id
                 name {
                   first
                   last
@@ -253,9 +186,8 @@ export function SearchProvider({ children }) {
             large
             medium
           }
-          studios {
+          studios @include(if: $isAnime) {
             edges {
-              id
               node {
                 name
               }
@@ -272,6 +204,111 @@ export function SearchProvider({ children }) {
         page: page,
         sort: sort,
         perPage: 20,
+        isAnime: isAnime,
+        isManga: isManga,
+        mangaOrAnime: mangaOrAnime
+    };
+
+    var url = 'https://graphql.anilist.co',
+        options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+
+    return fetch(url, options).then(handleResponse)            
+  }
+
+  const searchWithGenre = (searchTerm, isAnime, isManga, mangaOrAnime, page, sort, genre) => {
+    var query = `
+    query ($page: Int, $perPage: Int, $search: String, $sort: [MediaSort], $genre: String, $isAnime: Boolean!, $isManga: Boolean!, $mangaOrAnime: MediaType) {
+      Page(page: $page, perPage: $perPage) {
+        pageInfo {
+          currentPage
+          hasNextPage
+        }
+        media(search: $search, type: $mangaOrAnime, sort: $sort, genre: $genre) {
+          id
+          episodes @include(if: $isAnime)
+          volumes @include(if: $isManga)
+          chapters @include(if: $isManga)
+          description
+          duration @include(if: $isAnime)
+          isAdult
+          genres
+          seasonYear @include(if: $isAnime)
+          averageScore
+          popularity
+          startDate @include(if: $isManga) {
+            year
+          }
+          title {
+            romaji
+            english
+          }
+          staff @include(if: $isManga) {
+            edges {
+              role
+              node {
+                name {
+                  first
+                  last
+                  full
+                }
+              }
+            }
+          }
+          characters @include(if: $isAnime) {
+            edges {
+              node {
+                name {
+                  first
+                  last
+                }
+              }
+              role
+              voiceActors (language: JAPANESE) {
+                name {
+                  first
+                  last
+                }
+              }
+            }
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          studios @include(if: $isAnime) {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+          tags {
+            name
+          }
+        }
+      }
+    }
+    `
+    var variables = {
+        search: searchTerm,
+        page: page,
+        sort: sort,
+        genre: genre,
+        perPage: 20,
+        isAnime: isAnime,
+        isManga: isManga,
+        mangaOrAnime: mangaOrAnime
     };
 
     var url = 'https://graphql.anilist.co',
@@ -293,21 +330,19 @@ export function SearchProvider({ children }) {
   return (
     <SearchContext.Provider 
       value={{ 
+        search,
         setSearch,
         getSearch,
-        searchAnime, 
-        animeData, 
-        setDataAnime, 
-        searchManga, 
-        mangaData, 
-        setDataManga, 
         setIsAnimeSearch,
         setIsAnime,
         getIsAnime,
         pageNum,
         setPageNum,
         getPageNum,
-        topAnime
+        searchWithGenre,
+        data,
+        setItem,
+        topSearch
       }}
     >
       { children }

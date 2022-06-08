@@ -15,9 +15,9 @@ export function TopAnimeResults() {
   // Effect
   useEffect(() => {
     search.setIsAnime(true)
-    if (search.animeData === undefined || search.animeData.length === 0) {
+    if (search.data === undefined || search.data.length === 0) {
       try { 
-        search.setDataAnime(JSON.parse(localStorage.getItem('myData')))
+        search.setItem(JSON.parse(localStorage.getItem('myData')))
         search.setSearch(localStorage.getItem('myTop'))
         search.setPageNum(localStorage.getItem('myPage'))
         checkPages()
@@ -26,8 +26,7 @@ export function TopAnimeResults() {
         console.log(error)
         setDataExists(false)
       }
-    }
-    else {
+    } else {
       checkPages()
       setDataExists(true)
     }
@@ -35,7 +34,7 @@ export function TopAnimeResults() {
 
   // Check if there are available prev and next pages
   const checkPages = () => {
-    if (!search.animeData.Page.pageInfo.hasNextPage) { setHasNext(false) } 
+    if (!search.data.Page.pageInfo.hasNextPage) { setHasNext(false) } 
     else { setHasNext(true) }
     if (parseInt(search.getPageNum()) === 1) { setHasPrev(false) } 
     else { setHasPrev(true) }
@@ -52,9 +51,9 @@ export function TopAnimeResults() {
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.topAnime(page, item)
+    search.topSearch(page, item)
     .then((data) => {
-      search.setDataAnime(data.data)
+      search.setItem(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
     })
   }
@@ -71,9 +70,9 @@ export function TopAnimeResults() {
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.topAnime(page, item)
+    search.topSearch(page, item)
     .then((data) => {
-      search.setDataAnime(data.data)
+      search.setItem(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
     })
   }
@@ -87,6 +86,9 @@ export function TopAnimeResults() {
     }
     if (category === 'POPULARITY_DESC') {
       return 'Popular Now'
+    }
+    if (category === 'FAVOURITES_DESC') {
+      return 'Top Favourites'
     }
   }
 
@@ -113,7 +115,7 @@ export function TopAnimeResults() {
               w='full'
             >
               {
-                search.animeData.Page.media.map((item) => (
+                search.data.Page.media.map((item) => (
                   <AnimeCard key={item.id} anime={item} />
                   ))
                 }

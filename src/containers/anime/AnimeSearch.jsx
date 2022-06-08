@@ -12,11 +12,10 @@ export function AnimeSearch({ children }) {
 
   return (
     <Center>
-      <Box 
-        w={{base: '70vw', md: '50vw'}} 
+      <Box
+        w='100%'
         bg='boxGradient' 
         px='20px' py='10px'
-        mt='20px'
         borderRadius='3xl'
         shadow='0px 0px 10px black'
       >
