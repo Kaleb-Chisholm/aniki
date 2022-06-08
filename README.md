@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# Aniki
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aniki is an online wikipedia designed to help you discover new (and old) anime/manga for you to watch/read. You can either search for specific titles and filter by genre, or find the top trending, popular, rated, and favourited anime/manga. 
 
-## Available Scripts
+NOTE: Aniki is a work in progress and still has several "undesired traits". It's also missing several planned future features. Undesired traits and planned features are listed below in their respective areas.
 
-In the project directory, you can run:
+Aniki is a personal project and I've been developing it mainly as a way to teach myself ReactJS.
 
-### `npm start`
+## How it was built
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Aniki was build using [ReactJS](https://reactjs.org/), [Chakra-UI](https://chakra-ui.com/) and uses the 
+[AniList](https://anilist.gitbook.io/anilist-apiv2-docs/) API which utilizes [GraphQL](https://graphql.org/). It works by taking user input either through a search form or buttons and makes the request to the API which returns the desired information about specific titles. The AniList API was chosen because it allows for requests that search for an anime/manga title rather and an ID. This made it easier when letting the user search for an anime/manga.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Current Features
+Currently, Aniki has the following features:
+1. Search for anime/manga titles
+2. Sort anime/manga search results by different attributes
+3. Filter anime/manga search results by genre
+4. Browse top trending, rated, favourited, and popular anime/manga 
+5. Results are displayed across pages for the user to navigate through
+6. Results are not lost on page refresh
 
-### `npm test`
+## File structure and layout
+Following typical file structure of a react app, Aniki's src folder is split into "pages", "containers", and "components". 
+```bash
+├───components
+│   ├───anime
+│   └───manga
+├───containers
+│   ├───anime
+│   └───manga
+├───context
+├───pages
+├───search
+└───styles
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Components and containers contain seperate folders of functional components which relate to each of the main categories in Aniki. The "anime" folders contain any components/containers for anime interactions, and the same applies for the "manga" folder. The "context" folder contains context for my "SearchProvider", which is used for GraphQL queries and located under the "search" folder.
 
-### `npm run build`
+## Running the App
+1. Clone the repository ```git clone https://github.com/Kaleb-Chisholm/photo-caption-generator.git```
+2. Navigate into the newly cloned repository and install dependencies using ```npm ci```
+3. Run the app using ```npm start```
+4. Go to localhost:3000 in your web browser
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Planned core features (Wishlist)
+The following are features that I plan on adding to Aniki:
+1. Browse Seasonal anime + filter by season and genre. Implemented similar to how "Top Anime" is.
+2. Implement search history so the user can navigate between searches using back/forward buttons in browser. I plan to place the search query in the URL so that each search is a unique URL instead of all searches leading to "/top-anime".
+3. Add quick options to landing page so the user can quickly click to view top trending or popular anime/manga. This will also likely require using the URL to take the user straight to "top trending" for anime instead of to just the "/top-anime" page. 
+4. A back-end database that holds user data for accounts.
+5. A user profile/account with authentication.
+7. Manga and anime lists that the user can create to track their shows and books.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Undesired traits + Known bugs/issues
+There are no known bugs that impact the functionality of Aniki. However, there are some things about Aniki that, although work, I want to change to be more efficient.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. API Limitation: I would like to find an alternative API that allows requests that involve searching for anime/manga title. While this API offers everything I need, GraphQL is not a strong point of mine and prior to Aniki, I had no experience with GraphQL. From my limited knowledge, I've gathered that the AniList API doesn't handle "undefined" or "null" variables in queries. This means I had to create a different query for each use case instead of one query with optional variables.
+2. I would like to modularize my SearchProvider and split up its contents into smaller Providers.
+3. I'm a perfectionist when it comes to writing clean code. Since I've been learning a significant amount during this project, once I reach a higher level of understanding in ReactJS, I would like to go back and see if there are any more complex ways to reduce code duplication, and make the project source code better.
 
-### `npm run eject`
+NOTE: There is one TypeError that appears in the console when refreshing any of the results page. I know the source of this error, however, I have not found a way to fix it as it doesn't impact the functionality of Aniki.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
