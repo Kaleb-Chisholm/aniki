@@ -116,6 +116,18 @@ export function SearchForm() {
         if (isAnime) { navigate('/anime-results') } 
         else { navigate('/manga-results') }
       })
+      .catch(err => {
+        console.log(err.message)
+        toast({
+          title: 'Cannot reach AniList API',
+          description: err.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        })
+        setInput('')      // clear input bar
+        setLoading(false)   // allow for more submissions
+      })
     } else {
       search.searchWithGenre(input, isAnime, isManga, animeOrManga, 1, selected, genre)
       .then((data) => {
