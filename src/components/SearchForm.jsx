@@ -1,3 +1,13 @@
+/** 
+ * FILE: SearchForm.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component for the search form that the user interacts
+ *          with to make searches for anime/manga.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { 
   Box, 
   Button, 
@@ -15,7 +25,7 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import { SearchContext } from '../context/search'
 import { useNavigate } from 'react-router-dom'
 
-
+// List of genres to populate <Select>
 const genreData = [
   'None',
   'Action',
@@ -36,20 +46,24 @@ const genreData = [
   'Hentai',
 ]
 
+// ------------------------------ FUNCTION ------------------------------------
 export function SearchForm() {
 
   const toast = useToast()
-  const navigate = useNavigate()
   const search = useContext(SearchContext)
-  const isAnime = search.getIsAnime()
-  const [input, setInput] = useState([])
-  const [genre, setGenre] = useState('None')
-  const [loading, setLoading] = useState(false)      // results loading
+  const navigate = useNavigate()
 
+  const isAnime = search.getIsAnime()             // Anime or manga boolean flag
+  const [input, setInput] = useState([])          // Set input from user.
+  const [genre, setGenre] = useState('None')      // Genre selection  
+  const [loading, setLoading] = useState(false)   // Results loading
+
+  // Handle change to input bar
   const handleChange = (e) => {
     setInput(e.target.value)
   }
 
+  // Handle submission of input
   const handleSearch = e => {
     e.preventDefault()
 
@@ -74,22 +88,24 @@ export function SearchForm() {
       return
     }
 
-    setLoading(true)
+    setLoading(true)      // stop further submissions until results complete loading
 
     search.setSearch(input)
     localStorage.setItem('myInput', input)
     search.setPageNum(1)
-    var mySelect = document.getElementById('sortSelect')
-    var selected = mySelect.selectedOptions[0].value
+
+    var mySelect = document.getElementById('sortSelect'),
+        selected = mySelect.selectedOptions[0].value
 
     const isAnime = search.getIsAnime(),
           isManga = !(search.getIsAnime())
     
-    let animeOrManga
+    let animeOrManga       // Anime or manga search boolean flag.
 
     if (isAnime) { animeOrManga = 'ANIME' } 
     else { animeOrManga = 'MANGA' }
 
+    // Send query to API.
     if (genre === 'None') {
       search.search(input, isAnime, isManga, animeOrManga, 1, selected)
       .then((data) => {
@@ -113,6 +129,7 @@ export function SearchForm() {
     }
   }
 
+  // Set the genre selection from form.
   const setGenreSelection = (e) => {
     setGenre(e.target.value)
   }
@@ -169,7 +186,10 @@ export function SearchForm() {
                 <option value='TRENDING'>Trending Ascending</option>
               </Select>
             </FormControl>
-            <FormControl py='10px' ml={{base: '0px !important', lg: '10px !important'}}>
+            <FormControl 
+              py='10px' 
+              ml={{base: '0px !important', lg: '10px !important'}}
+            >
               <FormLabel ml='10px' fontSize='xl'>Genre Filter:</FormLabel>
               <Select 
                 id='genreSelect' 

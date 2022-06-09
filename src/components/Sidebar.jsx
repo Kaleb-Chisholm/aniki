@@ -1,3 +1,15 @@
+/** 
+ * FILE: Sidebar.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component for the sidebar used in site navigation
+ * 
+ * PROPS:
+ *   { children } - Any components being displayed along side the sidebar
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { Link } from 'react-router-dom'
 import {
   IconButton,
@@ -13,15 +25,11 @@ import {
 import { 
   IoMenuSharp, 
   IoSearchSharp, 
-  IoTrendingUpSharp, 
-  IoCalendarOutline, 
-  // IoBookOutline, 
-  // IoTvOutline,
-  // IoPeopleOutline,
-  // IoInformationCircleOutline,
+  IoTrendingUpSharp,
   IoHomeOutline
 } from 'react-icons/io5'
 
+// List of items for the sidebar.
 const SidebarItems = [
   {
     title: 'Menu',
@@ -33,8 +41,7 @@ const SidebarItems = [
     title: 'Anime',
     options: [
       {name: 'Anime Search', path: 'anime-search', icon: IoSearchSharp}, 
-      {name: 'Top Anime', path: 'top-anime', icon: IoTrendingUpSharp}, 
-      {name: 'Seasonal Anime', path: 'seasonal-anime', icon: IoCalendarOutline},
+      {name: 'Top Anime', path: 'top-anime', icon: IoTrendingUpSharp},
     ],
   },
   {
@@ -44,23 +51,9 @@ const SidebarItems = [
       {name: 'Top Manga', path: 'top-manga', icon: IoTrendingUpSharp}, 
     ],
   },
-  // I PLAN ON ADDING THESE
-  // {
-  //   title: 'My Lists',
-  //   options: [
-  //     {name: 'Anime List', path: 'anime-list', icon: IoTvOutline}, 
-  //     {name: 'Manga List', path: 'manga-list', icon: IoBookOutline}, 
-  //   ],
-  // },
-  // {
-  //   title: 'Community',
-  //   options: [
-  //     {name: 'My Friends', path: 'my-friends', icon: IoPeopleOutline}, 
-  //     {name: 'Forum', path: 'forum', icon: IoInformationCircleOutline}, 
-  //   ],
-  // },
 ]
 
+// ------------------------------ FUNCTION ------------------------------------
 export function Sidebar({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -76,7 +69,8 @@ export function Sidebar({ children }) {
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size='full'>
+        size='full'
+      >
         <DrawerContent>
           <SidebarContent onClose={onClose}/>
         </DrawerContent>
@@ -90,7 +84,7 @@ export function Sidebar({ children }) {
   )
 }
 
-
+// Content of the sidebar.
 const SidebarContent = ({ onClose, ...rest }) => {
   return (
     <Box
@@ -130,7 +124,11 @@ const SidebarContent = ({ onClose, ...rest }) => {
               </Text>
               {
                 item.options.map((option) => (
-                  <NavItem key={option.name} icon={option.icon} path={option.path}>
+                  <NavItem 
+                    key={option.name} 
+                    icon={option.icon} 
+                    path={option.path}
+                  >
                     {option.name}
                   </NavItem>
                 ))
@@ -143,6 +141,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
   )
 }
 
+// NavItem for the sidebar/mobilenav
 const NavItem = ({ icon, children, path }) => {
   return (
       <Flex
@@ -159,21 +158,24 @@ const NavItem = ({ icon, children, path }) => {
           textShadow: '0 0 10px white'
         }}
       >
-        {icon && (
-          <Icon
-            mr='4'
-            fontSize='18'
-            _groupHover={{
-              textShadow: '0 0 5px white',
-            }}
-            as={icon}
-          />
-        )}
+        {
+          icon && (
+            <Icon
+              mr='4'
+              fontSize='18'
+              _groupHover={{
+                textShadow: '0 0 5px white',
+              }}
+              as={icon}
+            />
+          )
+        }
         {children}
       </Flex>
   )
 }
 
+// "Sidebar" (MobileNav) for mobile displays
 const MobileNav = ({ onOpen, ...rest }) => {
   return (
     <Flex
@@ -198,162 +200,3 @@ const MobileNav = ({ onOpen, ...rest }) => {
     </Flex>
   )
 }
-
-
-
-// import { Avatar, Box, Button, Center, Grid, GridItem, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Stack, Text } from '@chakra-ui/react'
-// import { IoGrid, IoChevronBackOutline, IoSettings } from 'react-icons/io5'
-// import { Link } from 'react-router-dom'
-// const sidebar = [
-//   {
-//     title: 'Anime',
-//     options: [
-//       {name: 'Anime Search', path: 'anime-search'}, 
-//       {name: 'Top Anime', path: 'top-anime'}, 
-//       {name: 'Seasonal Anime', path: 'seasonal-anime'},
-//     ],
-//   },
-//   {
-//     title: 'Manga',
-//     options: [
-//       {name: 'Manga Search', path: 'manga-search'}, 
-//       {name: 'Top Manga', path: 'top-manga'}, 
-//     ],
-//   },
-//   {
-//     title: 'My Lists',
-//     options: [
-//       {name: 'Anime List', path: 'anime-list'}, 
-//       {name: 'Manga List', path: 'manga-list'}, 
-//     ],
-//   },
-//   {
-//     title: 'Community',
-//     options: [
-//       {name: 'My Friends', path: 'my-friends'}, 
-//       {name: 'Forum', path: 'forum'}, 
-//     ],
-//   },
-// ]
-
-// export function Sidebar() {
-//   return (
-//     <Grid templateColumns='auto 1fr' templateRows='auto 1fr' m='20px'>
-//       <GridItem 
-//         bg='headerColor' 
-//         borderTopRadius='2xl' 
-//         borderLeftRadius='2xl' 
-//         w='60px' h='60px'
-//       >
-//         logo
-//       </GridItem>
-//       <GridItem bg='headerColor'>
-//         <HStack 
-//           justify='space-between' 
-//           pl='5px' 
-//           borderBottomLeftRadius='3xl' 
-//           bg='primaryBg' 
-//           h='60px'
-//         >
-//           <Text 
-//             fontSize='3xl' 
-//             fontWeight='bold'
-//             color='gray.300'
-//             // m='10px'
-//             textAlign='center'
-//             w='full'
-//           >
-//             Aniki
-//           </Text>
-//           {/* <Button p='0px' borderRadius='2xl'>
-//             <IoChevronBackOutline color='black' size='18pt' />        
-//           </Button> */}
-//         </HStack>
-//       </GridItem>
-//       <GridItem bg='headerColor'>
-//         <Stack 
-//           h='100%' w='60px' 
-//           justify='space-between' 
-//           borderTopEndRadius='3xl' 
-//           bg='primaryBg'
-//           p='10px'
-//         >
-//           <Button p='0px' borderRadius='2xl' variant='navbarbtn'>
-//             <IoGrid size='16pt' />        
-//           </Button>
-//           <Stack pb='15px'>
-//             <Button p='0px' borderRadius='2xl' variant='navbarbtn'>
-//               <IoSettings size='16pt' />        
-//             </Button>
-//             <Menu>
-//               <MenuButton
-//                 as={Button}
-//                 rounded={'full'}
-//                 variant={'link'}
-//                 cursor={'pointer'}
-//                 minW={0}
-//               >
-//                 <Avatar
-//                   size={'sm'}
-//                   src={'https://avatars.dicebear.com/api/male/username.svg'}
-//                 />
-//               </MenuButton>
-//               <MenuList alignItems={'center'} bg='menuColor'>
-//                 <br />
-//                 <Center>
-//                   <Avatar
-//                     size={'2xl'}
-//                     src={'https://avatars.dicebear.com/api/male/username.svg'}
-//                   />
-//                 </Center>
-//                 <br />
-//                 <Center>
-//                   <p>Username</p>
-//                 </Center>
-//                 <br />
-//                 <MenuDivider />
-//                 <MenuItem m='5px' w='80%' _focus={{bg: 'none', color: 'black'}}>
-//                   Account Settings
-//                 </MenuItem>
-//                 <MenuItem m='5px' w='80%' _focus={{bg: 'none', color: 'black'}}>
-//                   Logout
-//                 </MenuItem>
-//               </MenuList>
-//             </Menu>
-//           </Stack>
-//         </Stack>
-//       </GridItem>
-//       <GridItem>
-//         <Stack 
-//           bg='headerColor'
-//           borderRadius='2xl'
-//           borderTopLeftRadius='none'
-//           h='100%'
-//           p='20px'
-//         >
-//           {
-//             sidebar.map((item) => (
-//               <>
-//                 <Text color='black' key={item.title}>{item.title}</Text>
-//                 {
-//                   item.options.map((option) => (
-//                     <Button 
-//                       as={Link} 
-//                       to={`/${option.path}`} 
-//                       key={option.path}
-//                       w='80%'
-//                       _focus={{bg: 'none', color: 'black'}}
-//                       variant='navbarbtn'
-//                     >
-//                       {option.name}
-//                     </Button>
-//                   ))
-//                 }
-//               </>
-//             ))
-//           }
-//         </Stack>
-//       </GridItem>
-//     </Grid>
-//   )
-// }

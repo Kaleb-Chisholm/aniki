@@ -1,3 +1,13 @@
+/** 
+ * FILE: TopMangaResults.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component which contains the MangaCards and forward/back
+ *          buttons to move between pages for TopManga.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { useContext, useState, useEffect } from 'react'
 import { SearchContext } from '../../context/search'
 import { Box, Center, Grid, Heading, Stack, Text } from '@chakra-ui/react'
@@ -5,14 +15,15 @@ import { MangaCard } from './MangaCard'
 import { BackForthButtons } from '../BackForthButtons'
 import { TopManga } from '../../containers/manga/TopManga'
 
+// ------------------------------ FUNCTION ------------------------------------
 export function TopMangaResults() {
 
   const search = useContext(SearchContext)
-  const [dataExists, setDataExists] = useState(false)
-  const [hasPrev, setHasPrev] = useState(false)
-  const [hasNext, setHasNext] = useState(true)
+  const [dataExists, setDataExists] = useState(false) // data exists from API or localstorage
+  const [hasPrev, setHasPrev] = useState(false)       // previous page exists
+  const [hasNext, setHasNext] = useState(true)        // next page exists
 
-  // Effect
+  // Effect - check if data exists
   useEffect(() => {
     if (search.data === undefined || search.data.length === 0) {
       try { 
@@ -47,8 +58,8 @@ export function TopMangaResults() {
       return
     }
 
-    const item = search.getSearch()
-    const page = parseInt(search.getPageNum()) + 1
+    const item = search.getSearch(),
+          page = parseInt(search.getPageNum()) + 1
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
@@ -66,18 +77,19 @@ export function TopMangaResults() {
       return
     }
 
-    const item = search.getSearch()
-    const page = parseInt(search.getPageNum()) - 1
+    const item = search.getSearch(),
+          page = parseInt(search.getPageNum()) - 1
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.topManga(page, item)
+    search.topSearch(false, true, 'MANGA', page, item)
     .then((data) => {
-      search.setDataManga(data.data)
+      search.setItem(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
     })
   }
 
+  // Convert from value to plain text for display
   const convertCategory = (category) => {
     if (category === 'TRENDING_DESC') {
       return 'Trending Now'
@@ -99,7 +111,7 @@ export function TopMangaResults() {
         <Box w='100%'>
           <TopManga>
             <Heading fontSize='2xl' pt='10px' pl='20px'>
-            {`Showing Results for "${convertCategory(search.getSearch())}"`}
+              {`Showing Results for "${convertCategory(search.getSearch())}"`}
             </Heading>
           </TopManga>
         </Box>

@@ -1,3 +1,16 @@
+/** 
+ * FILE: SingleManga.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component for the content of the modal popup
+ *          shown when a MangaCard is clicked.
+ * 
+ * PROPS:
+ *   manga - The manga data.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import {
   Box,
   Grid, 
@@ -8,9 +21,10 @@ import {
   Text,
 } from '@chakra-ui/react'
 
-
+// ------------------------------ FUNCTION ------------------------------------
 export function SingleManga(props) {
 
+  // Check data + set the manga description
   const setDescription = (description) => {
     if (description != null && !(/^\s*$/.test(description))) {
       return ((description).replaceAll('<br>', ''))
@@ -18,7 +32,8 @@ export function SingleManga(props) {
       return 'No description available'
     }
   }
-
+  
+  // Check data + set the staff of the manga
   const setStaff = (creator) => {
     if (creator.length === 0) {
       return [{role: 'Staff unavailable', name: ''}]
@@ -43,6 +58,7 @@ export function SingleManga(props) {
     }
   }
 
+  // Check data + set the tags of the manga
   const setTags = (tags) => {
     if (tags.length === 0) {
       return []
@@ -56,6 +72,7 @@ export function SingleManga(props) {
     return tagList
   }
 
+  // Check data + set the score of the manga
   const setScore = (score) => {
     if (score === null) {
       return 'Reviews unavailable'
@@ -64,6 +81,7 @@ export function SingleManga(props) {
     }
   }
 
+  // Manga data
   const data = props.data,
         image = (data.coverImage.large 
                 || data.coverImage.extraLarge 
@@ -77,8 +95,6 @@ export function SingleManga(props) {
         chapters = (data.chapters || 'Unavailable'),
         tags = setTags(data.tags)
 
-  console.log(data)
-
   return (
     <Grid templateColumns='auto 1fr' gap={4}>
       <GridItem>
@@ -90,21 +106,22 @@ export function SingleManga(props) {
           borderRadius='3xl'
         />
         {
-        adult &&
-        <Text 
-          position='absolute' 
-          mt='-28px' ml='0px' 
-          bg='red' 
-          w='fit-content' 
-          p='2px 10px' 
-          borderRadius='3xl'
-          borderTopLeftRadius='none'
-          borderBottomEndRadius='none'
-          fontWeight='bold'
-          shadow='0px 0px 10px black'
-        >
-          ADULT 18+
-        </Text>}
+          adult &&
+          <Text 
+            position='absolute' 
+            mt='-28px' ml='0px' 
+            bg='red' 
+            w='fit-content' 
+            p='2px 10px' 
+            borderRadius='3xl'
+            borderTopLeftRadius='none'
+            borderBottomEndRadius='none'
+            fontWeight='bold'
+            shadow='0px 0px 10px black'
+          >
+            ADULT 18+
+          </Text>
+        }
       </GridItem>
       <Box 
         bg='grey.800' 

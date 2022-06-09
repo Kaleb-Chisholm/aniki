@@ -1,8 +1,21 @@
+/** 
+ * FILE: TopAnime.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/09/2022
+ * 
+ * PURPOSE: Function component finding top anime.
+ * 
+ * PROPS:
+ *   { children } - Any children function components.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { Box, Button, Center, Flex, Heading, Stack } from '@chakra-ui/react'
 import { useContext, useState} from 'react'
 import { SearchContext } from '../../context/search'
 import { useNavigate } from 'react-router-dom'
 
+// Data for categories
 const categoryData = [
   {
     value: 'TRENDING_DESC',
@@ -22,12 +35,15 @@ const categoryData = [
   },
 ]
 
+// ------------------------------ FUNCTION ------------------------------------
 export function TopAnime({ children }) {
-
+  
   const navigate = useNavigate()
   const search = useContext(SearchContext)
+
   const [loading, setLoading] = useState(false)      // results loading
   
+  // Handle button click and get top anime
   const handleClick = e => {
     e.preventDefault()
 
@@ -54,8 +70,14 @@ export function TopAnime({ children }) {
           borderRadius='3xl'
           shadow='0px 0px 10px black'
         >
-          <Heading mb='10px'>Top <span className='textPop'>Anime</span></Heading>
-          <Flex direction={{base: 'column', md: 'row'}} justify='space-evenly' wrap='wrap'>
+          <Heading mb='10px'>
+            Top <span className='textPop'>Anime</span>
+          </Heading>
+          <Flex 
+            direction={{base: 'column', md: 'row'}} 
+            justify='space-evenly' 
+            wrap='wrap'
+          >
             {
               categoryData.map((cat) =>
                 <Button 

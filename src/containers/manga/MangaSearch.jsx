@@ -1,8 +1,21 @@
+/** 
+ * FILE: MangaSearch.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/09/2022
+ * 
+ * PURPOSE: Function component for searching manga.
+ * 
+ * PROPS:
+ *   { children } - Any children function components
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { SearchForm } from '../../components/SearchForm'
 import { SearchContext } from '../../context/search'
 import { useContext, useEffect } from 'react'
 import { Box, Center, Heading, Stack } from '@chakra-ui/react'
 
+// ------------------------------ FUNCTION ------------------------------------
 export function MangaSearch({ children }) {
 
   const search = useContext(SearchContext)
@@ -19,7 +32,9 @@ export function MangaSearch({ children }) {
           borderRadius='3xl'
           shadow='0px 0px 10px black'
         >
-          <Heading mb='10px'>Search <span className='textPop'>Manga</span></Heading>
+          <Heading mb='10px'>
+            Search <span className='textPop'>Manga</span>
+          </Heading>
           <SearchForm />
         </Box>
         {children}

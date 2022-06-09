@@ -1,18 +1,30 @@
+/** 
+ * FILE: MangaResult.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component which contains the MangaCards and forward/back
+ *          buttons to move between pages for MangaSearch.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { useContext, useState, useEffect } from 'react'
 import { SearchContext } from '../../context/search'
-import { Box, Button, Center, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Center, Grid, Heading, Stack, Text } from '@chakra-ui/react'
 import { MangaSearch } from '../../containers/manga/MangaSearch'
 import { MangaCard } from './MangaCard'
-import { IoArrowBackSharp, IoArrowForwardSharp } from 'react-icons/io5'
 import { BackForthButtons } from '../BackForthButtons'
 
+// ------------------------------ FUNCTION ------------------------------------
 export function MangaResults() {
 
   const search = useContext(SearchContext)
-  const [dataExists, setDataExists] = useState(false)
-  const [hasPrev, setHasPrev] = useState(false)
-  const [hasNext, setHasNext] = useState(true)
 
+  const [dataExists, setDataExists] = useState(false) // data exists from API or localstorage
+  const [hasPrev, setHasPrev] = useState(false)       // previous page exists
+  const [hasNext, setHasNext] = useState(true)        // next page exists
+
+  // Effect - check if data exists
   useEffect(() => {
     if (search.data === undefined || search.data.length === 0) {
       try { 
@@ -47,8 +59,8 @@ export function MangaResults() {
       return
     }
 
-    const item = search.getSearch()
-    const page = parseInt(search.getPageNum()) + 1
+    const item = search.getSearch(),
+          page = parseInt(search.getPageNum()) + 1
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
@@ -66,8 +78,8 @@ export function MangaResults() {
       return
     }
 
-    const item = search.getSearch()
-    const page = parseInt(search.getPageNum()) - 1
+    const item = search.getSearch(),
+          page = parseInt(search.getPageNum()) - 1
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)

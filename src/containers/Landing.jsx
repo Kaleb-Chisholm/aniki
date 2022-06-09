@@ -1,7 +1,17 @@
+/** 
+ * FILE: AnimeCard.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component for the landing (home) page content.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { Center, Stack, Text } from '@chakra-ui/react'
 import styled from 'styled-components'
 import { keyframes } from 'styled-components'
 
+// ------------------------------ FUNCTION ------------------------------------
 export function Landing() {
 
   const gradient = keyframes`{

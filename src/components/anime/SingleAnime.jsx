@@ -1,3 +1,16 @@
+/** 
+ * FILE: SingleAnime.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component for the content of the modal popup
+ *          shown when an AnimeCard is clicked.
+ * 
+ * PROPS:
+ *   anime - The anime data.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import {
   Box,
   Grid, 
@@ -9,8 +22,10 @@ import {
   Text,
 } from '@chakra-ui/react'
 
+// ------------------------------ FUNCTION ------------------------------------
 export function SingleAnime(props) {
 
+  // Check data + set the studios of the anime.
   const setStudios = (studio) => {
     if (studio.length === 0) {
       return ['Unavailable']
@@ -27,6 +42,7 @@ export function SingleAnime(props) {
     }
   }
 
+  // Check data + set the anime description
   const setDescription = (description) => {
     if (description != null && !(/^\s*$/.test(description))) {
       return ((description).replaceAll('<br>', ''))
@@ -35,6 +51,7 @@ export function SingleAnime(props) {
     }
   }
 
+  // Check data + set the stars of the anime
   const setStars = (stars) => {
     if (stars.length === 0) {
       return ['Stars unavailable']
@@ -60,6 +77,7 @@ export function SingleAnime(props) {
     }
   }
 
+  // Check data + set the tags of the anime
   const setTags = (tags) => {
     if (tags.length === 0) {
       return []
@@ -73,6 +91,7 @@ export function SingleAnime(props) {
     return tagList
   }
 
+  // Check data + set the score of the anime 
   const setScore = (score) => {
     if (score === null) {
       return 'Reviews unavailable'
@@ -81,6 +100,7 @@ export function SingleAnime(props) {
     }
   }
 
+  // Check data + set the episode count or duration of the anime
   const setLength = (data) => {
     console.log(data)
     if (data.episodes === 1) {
@@ -90,6 +110,7 @@ export function SingleAnime(props) {
     }
   }
 
+  // Anime data
   const data = props.data,
         image = (data.coverImage.large 
                 || data.coverImage.extraLarge 
@@ -128,7 +149,8 @@ export function SingleAnime(props) {
            shadow='0px 0px 10px black'
          >
            ADULT 18+
-         </Text>}
+         </Text>
+        }
       </GridItem>
       <Box 
         bg='grey.800' 

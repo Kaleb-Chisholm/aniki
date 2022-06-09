@@ -1,3 +1,10 @@
+/** 
+ * FILE: Theme.js
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/09/2022
+ * 
+ * PURPOSE: Extend Chakra-UI theme.
+ */
 import { extendTheme } from '@chakra-ui/react'
 
 export const myTheme = extendTheme ({
@@ -82,9 +89,5 @@ export const myTheme = extendTheme ({
         },
       },
     },
-    MenuItem: {
-      baseStyle: {
-      }
-    }
   },
 })

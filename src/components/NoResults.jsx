@@ -1,5 +1,16 @@
+/** 
+ * FILE: NoResults.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component to display that there are no results yet, prior
+ *          the user searching.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { Center, Text } from "@chakra-ui/react";
 
+// ------------------------------ FUNCTION ------------------------------------
 export function NoResults() {
   return (
     <Center pt='10vh'>

@@ -1,3 +1,13 @@
+/** 
+ * FILE: TopAnimeResults.jsx
+ * AUTHOR: Kaleb Chisholm
+ * LAST MODIFIED: 06/08/2022
+ * 
+ * PURPOSE: Function component which contains the AnimeCards and forward/back
+ *          buttons to move between pages for TopAnime.
+*/
+
+// ------------------------------- IMPORTS ------------------------------------
 import { Box, Center, Grid, Heading, Stack, Text } from '@chakra-ui/react'
 import { AnimeCard } from './AnimeCard'
 import { SearchContext } from '../../context/search'
@@ -5,14 +15,16 @@ import { useEffect, useContext, useState } from 'react'
 import { BackForthButtons } from '../BackForthButtons'
 import { TopAnime } from '../../containers/anime/TopAnime'
 
+// ------------------------------ FUNCTION ------------------------------------
 export function TopAnimeResults() {
   
   const search = useContext(SearchContext)
-  const [dataExists, setDataExists] = useState(false)   // States
-  const [hasPrev, setHasPrev] = useState(false)
-  const [hasNext, setHasNext] = useState(true)
 
-  // Effect
+  const [dataExists, setDataExists] = useState(false) // data exists from API or localstorage
+  const [hasPrev, setHasPrev] = useState(false)       // previous page exists
+  const [hasNext, setHasNext] = useState(true)        // next page exists
+
+  // Effect - check if data exists
   useEffect(() => {
     search.setIsAnime(true)
     if (search.data === undefined || search.data.length === 0) {
@@ -46,12 +58,12 @@ export function TopAnimeResults() {
       return
     }
 
-    const item = search.getSearch()
-    const page = parseInt(search.getPageNum()) + 1
+    const item = search.getSearch(),
+          page = parseInt(search.getPageNum()) + 1
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.topSearch(page, item)
+    search.topSearch(true, false, 'ANIME', page, item)
     .then((data) => {
       search.setItem(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
@@ -65,18 +77,19 @@ export function TopAnimeResults() {
       return
     }
 
-    const item = search.getSearch()
-    const page = parseInt(search.getPageNum()) - 1
+    const item = search.getSearch(),
+          page = parseInt(search.getPageNum()) - 1
 
     localStorage.setItem('myPage', page)
     search.setPageNum(page)
-    search.topSearch(page, item)
+    search.topSearch(true, false, 'ANIME', page, item)
     .then((data) => {
       search.setItem(data.data)
       localStorage.setItem('myData', JSON.stringify(data.data))
     })
   }
 
+  // Convert from value to plain text for display
   const convertCategory = (category) => {
     if (category === 'TRENDING_DESC') {
       return 'Trending Now'
@@ -104,9 +117,7 @@ export function TopAnimeResults() {
         </Box>
       </Center>
       {
-        dataExists 
-        ? 
-        (
+        dataExists ? (
           <Stack>
             <Grid 
               templateColumns='repeat(auto-fill, minmax(215px, 1fr))'
@@ -128,9 +139,7 @@ export function TopAnimeResults() {
               goNextPage={goNextPage}
             />
           </Stack>
-        )
-        : 
-        (
+        ) : (
           <Center>
             <Text>Data does not exist</Text>
           </Center>
